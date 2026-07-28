@@ -28,9 +28,10 @@ claude plugin marketplace add savelev-sa/noname-mcp
 claude plugin install noname-mcp
 ```
 
-From a local clone, point the first command at the clone directory instead of the repo name. Inside a session the
-equivalent route is `/plugin marketplace add savelev-sa/noname-mcp`, then install `noname-mcp` from the `/plugin`
-menu.
+If you have more than one marketplace configured, name it explicitly: `claude plugin install noname-mcp@noname-mcp`
+(the plugin and the marketplace happen to share a name). From a local clone, point the first command at the clone
+directory instead of the repo name. Inside a session the equivalent route is
+`/plugin marketplace add savelev-sa/noname-mcp`, then install `noname-mcp` from the `/plugin` menu.
 
 ## First run
 
@@ -65,32 +66,30 @@ The commands orchestrate the MCP tools the local server exposes; they do not def
 
 ## Tool surface
 
-The server keeps `tools/list` small: **17 first-class tools** — 14 promoted common-flow tools (health, plans,
-run/stop, progress, restore points, quick restore, storage accounts, history, diagnostics) plus 3 meta-tools
-(`search_tools`, `get_tool_info`, `execute_tool`). Everything else — roughly a hundred more specialized
-capabilities — is reachable through `execute_tool`, so the model discovers them on demand instead of carrying
-them in every request. Destructive tools are confirm-gated by the server itself, not only by the prompt.
+The server deliberately keeps `tools/list` short: the common backup flows are first-class tools, and the long tail
+of more specialized capabilities is reached on demand through meta-tools (`search_tools`, `get_tool_info`,
+`execute_tool`) instead of being carried in every request. Destructive tools are confirm-gated by the server itself,
+not only by the prompt. The exact set belongs to the server and is documented with it — this page does not repeat
+the numbers, because a count copied here would drift the first time the server changes one.
 
 ## Configuration
 
-Nothing is required: the installer URL ships baked into the plugin. All settings are environment variables read
-locally by the proxy — never taken from a tool argument. Full table in the
-[plugin README](noname-mcp/README.md#proxy-config-local-only---never-from-a-tool-argument-or-store).
-
-| Variable | Default | Use |
-|---|---|---|
-| `NONAME_MCP_URL` | `http://localhost:19360/mcp` | where the local MCP service listens |
-| `NONAME_MCP_INSTALLER_URL` | this repo's `releases/latest/download/Noname-MCP-Setup.exe` | override the installer source (non-standard setups, local testing) |
-| `NONAME_MCP_COMPAT_MAJOR` | `1` | MCP-server major version this plugin speaks |
-| `NONAME_MCP_PRODUCT_NAME` | `your backup software` | how the backup product is named to you in setup messages |
+**Nothing is required.** The installer URL ships baked in, the endpoint has a working default, and no environment
+variable is needed for a normal install. Four variables exist for non-standard setups and testing — names, defaults
+and exact meanings in one place, the
+[plugin README](noname-mcp/README.md#proxy-config-local-only---never-from-a-tool-argument-or-store). They are read
+locally by the proxy and never taken from a tool argument or from content the model has read.
 
 ## Status and scope
 
-- **Pre-release (v0.1.0).** Not listed in any public plugin catalog — install it from this repo.
+- **Pre-release, `v0.1.0`.** Not listed in any public plugin catalog — install it from this repo.
 - **Windows only.** No macOS or Linux runtime; multi-machine management is out of scope for this version.
-- The guided install needs a published release carrying `Noname-MCP-Setup.exe`. Until one exists, either set
-  `NONAME_MCP_INSTALLER_URL` to wherever you host the installer, or install the server manually.
+- The guided install pulls `Noname-MCP-Setup.exe` from this repo's latest release. If you host the installer
+  somewhere else, point `NONAME_MCP_INSTALLER_URL` at it; otherwise nothing to configure.
 - The plugin never installs the backup agent silently, and the MCP server is installed only after you say yes.
+- The plugin does not update itself, and neither does the server today. This page will say otherwise only once that
+  path has been demonstrated end to end on a real machine — a reader who believes "it updates itself" stops watching
+  the version.
 
 ## License
 

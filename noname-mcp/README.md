@@ -7,7 +7,7 @@ server is installed separately and runs as a local Windows service; the proxy fo
 Claude Code (stdio) and that service (HTTP, SSE-aware). Windows v1, Apache-2.0 (see [LICENSE](../LICENSE)).
 
 - **Plugin id** `noname-mcp`, version 0.1.0, pre-release — not listed in any public plugin catalog.
-- **Why a proxy and not a bundle:** the repo stays git-friendly (no ~120 MB server binary in version control), and
+- **Why a proxy and not a bundle:** the repo stays git-friendly (no server binary in version control at all), and
   the server is installed and serviced separately from the plugin. Note what is deliberately NOT claimed here: the
   server does not update itself today, and this text will not say it does until that path has been demonstrated
   end to end on a real machine — a reader who believes "it updates itself" stops watching the version.
@@ -28,6 +28,7 @@ If either is missing the proxy does not crash: it degrades to onboarding (below)
 | Service absent at startup | The proxy acts as a minimal MCP server exposing exactly one tool, `noname_setup`, which returns a plain-language message plus a structured status (`server_installed`, `endpoint`, `installer_url`, `installer_url_configured`, `agent_installed`, `next_action`). |
 | Service appears mid-session (e.g. just installed) | A background poll (every 4s) and a lazy check on each tool call promote the proxy to forward mode: it performs its own `initialize`, then emits `notifications/tools/list_changed` so the host reloads the real tool list **in the same session**. A Claude Code restart is only the documented fallback. |
 | Service disappears mid-session | Forwarding retries (3 attempts, 1.5s apart) on connection errors, then degrades back to onboarding instead of failing hard. |
+| The host shuts the proxy down | The session is RELEASED immediately — `DELETE` on the MCP path carrying the session id the server issued — instead of being left for the server's inactivity timeout. Bounded by an 800ms budget so shutdown is never delayed, skipped entirely when there is no session, and logged when it could not be delivered. A killed process cannot say anything, so the server's timeout stays the backstop for that case. |
 | Version mismatch | The proxy still forwards, but warns which side to update: the server's MAJOR must equal `NONAME_MCP_COMPAT_MAJOR`; minor/patch drift is tolerated. |
 
 Liveness for promotion is the `/mcp` `initialize` call, deliberately **not** `/health` — health aggregates agent
@@ -47,10 +48,14 @@ and words like "MCP server" or "proxy" stay out of the default narration; the te
 
 ## Tool surface
 
-Once the service is up, `tools/list` shows **17 first-class tools**: 14 promoted common-flow tools plus 3
-meta-tools (`search_tools`, `get_tool_info`, `execute_tool`). The remaining ~106 capabilities are reachable via
-`execute_tool`. Destructive tools are confirm-gated server-side. Commands therefore name promoted tools directly
-and route anything else through the meta-tools.
+Once the service is up, `tools/list` shows a small first-class set — the common backup flows — plus three
+meta-tools (`search_tools`, `get_tool_info`, `execute_tool`) through which the long tail is reached on demand.
+Destructive tools are confirm-gated server-side.
+
+What that means for the commands here, which is the part this repository owns: a command names a first-class tool
+directly when one exists for the job, and routes anything else through the meta-tools. Which tools are first-class
+is the server's decision and is documented with the server — deliberately not restated here, because a copied
+inventory drifts silently the first time the server changes one and nothing in this repository would notice.
 
 ## Layout
 
