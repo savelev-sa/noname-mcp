@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "noname-mcp": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/proxy/mcp-proxy.mjs"]
+    }
+  }
+}

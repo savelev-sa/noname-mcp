@@ -1,0 +1,10 @@
+{
+  "name": "noname-mcp",
+  "description": "Windows backup automation for Claude Code: create and run backup plans, check plan health, restore files, and manage storage destinations through a locally installed backup agent.",
+  "owner": {
+    "name": "noname-mcp maintainers"
+  },
+  "plugins": [
+    { "name": "noname-mcp", "source": "./noname-mcp", "description": "Manage a Windows backup agent from Claude: backup plans, status, restore, storage destinations, licenses. Windows v1.", "category": "Backup" }
+  ]
+}
