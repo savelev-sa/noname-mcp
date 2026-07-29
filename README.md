@@ -89,8 +89,10 @@ locally by the proxy and never taken from a tool argument or from content the mo
 - The plugin never installs the backup agent silently, and the MCP server is installed only after you say yes.
 - **The plugin does not update itself.** Installing a newer version is something you do, the same way you installed it.
 - The server, once installed as a service, does have an update path — it can check for a newer build and install one.
-  That is stated as a fact, not offered as a feature: it has not been demonstrated end to end on a real machine, so
-  this page does not tell you to rely on it, and you should keep an eye on the version you are running.
+  That is stated as a fact, not offered as a feature: **no successful update has been demonstrated on a real machine**
+  — a real candidate downloaded, installed, and the new version serving. What has been demonstrated is the opposite
+  direction, that an unsuitable candidate is refused, which says nothing about a good one being applied. So this page
+  does not tell you to rely on it, and you should keep an eye on the version you are running.
 
 ## License
 

@@ -10,7 +10,8 @@ Claude Code (stdio) and that service (HTTP, SSE-aware). Windows v1, Apache-2.0 (
 - **Why a proxy and not a bundle:** the repo stays git-friendly (no server binary in version control at all), and
   the server is installed and serviced separately from the plugin. The server does carry an update path — wired only
   when it runs as the published service executable, so a development run checks but never acts. Deliberately not
-  claimed here as a feature: it has not been demonstrated end to end on a real machine, and a reader who believes
+  claimed here as a feature: no SUCCESSFUL update has been demonstrated on a real machine — the demonstrated cases are
+  refusals, which prove a bad candidate is rejected and nothing about a good one being applied. A reader who believes
   "it updates itself" stops watching the version.
 - **Server endpoint:** `http://localhost:19360/mcp` by default.
 
