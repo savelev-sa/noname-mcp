@@ -76,9 +76,10 @@ the numbers, because a count copied here would drift the first time the server c
 
 ## Configuration
 
-**Nothing is required.** The installer URL ships baked in, the endpoint has a working default, and no environment
-variable is needed for a normal install. Four variables exist for non-standard setups and testing — names, defaults
-and exact meanings in one place, the
+**No environment variable is required** — the installer URL ships baked in and the endpoint has a working default. That
+is a statement about settings only: getting to a working state still takes the three installs described above (this
+plugin, the MCP server, the backup agent), and nothing here claims otherwise. Four variables exist for non-standard
+setups and testing — names, defaults and exact meanings in one place, the
 [plugin README](noname-mcp/README.md#proxy-config-local-only---never-from-a-tool-argument-or-store). They are read
 locally by the proxy and never taken from a tool argument or from content the model has read.
 
