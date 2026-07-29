@@ -26,6 +26,14 @@ none of the caution a verb that sounds like it acts.
    cannot be undone from here before asking to proceed.
 3. **Gather only what changes.** Leave everything the user did not mention alone; do not re-ask the whole wizard and
    do not resend unrelated settings.
+   - **RETENTION is different from the rest, and it is the one argument that needs naming here.** Shortening it does
+     not delete anything now — it decides that older versions will be deleted later, on an unattended run, when there
+     is nobody to ask. So the naming belongs at the moment of the choice: say what the new setting will remove on the
+     next run of this named plan, in terms of what the user keeps and stops keeping, and get agreement to THAT rather
+     than to a number. If you cannot tell how many versions fall outside the new setting, say so instead of implying
+     the change is free.
+   - Name, schedule and the notification address are not guarded. Asking about them spends the user's attention where
+     nothing is at risk, which is its own defect.
 4. **Summarize and confirm** before applying: what changes, from what, to what.
 5. **Apply in place** with the update tool, then confirm it took effect by reading the plan back rather than by
    trusting the call's own answer.
