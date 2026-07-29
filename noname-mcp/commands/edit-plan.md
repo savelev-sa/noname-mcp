@@ -13,6 +13,10 @@ Plan updating is not in the promoted set - find the plan-update tool through the
 `get_tool_info` -> `execute_tool`). Talk to the user in plain language: describe choices in words, not tool names
 or field tokens.
 
+**Before invoking a long-tail tool you have not used here, read what it DOES (`get_tool_info`).** A tool's name is not
+evidence: this product ships one that performs a shrink under a name that reads like a read. A reading name is given
+none of the caution a verb that sounds like it acts.
+
 1. **Identify the plan.** `list_plans` if the user is unsure; if several match what they said, ask which one rather
    than guessing.
 2. **Show what it looks like now** for the parts being changed - current schedule, retention, sources, failure-email

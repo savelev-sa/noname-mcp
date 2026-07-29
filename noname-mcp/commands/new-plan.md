@@ -13,6 +13,8 @@ After creation, confirm the plan was saved. If the backup tools aren't available
 
 **Changing a plan that already exists: EDIT it, never delete and re-create.** There is no `/edit-plan` command, but
 the capability exists — find the plan-update tool through the meta-tools (`search_tools` -> `execute_tool`) and use
+
+**Before invoking a long-tail tool you have not used here, read what it DOES (`get_tool_info`).** A tool's name is not evidence: this product ships one that performs a shrink under a name that reads like a read. A reading name is given none of the caution a verb that sounds like it acts.
 it. This matters because delete-and-recreate looks equivalent and is not: it discards the plan's identity, its
 session history and the backup data associated with it. If a user asks for a change you cannot make through an
 update, say what would be lost before offering to rebuild the plan, and let them decide — the loss is theirs to

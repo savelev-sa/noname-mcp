@@ -31,9 +31,11 @@ having exported first does not make it reversible when the export itself carries
 
 Two cautions that apply to every destructive step here, not only to removal:
 
-- **A tool's description is not a guard.** Two import tools reach the same configuration-replacing call and only one
-  of them is marked destructive, the unmarked one reading as additive. So decide from what the operation DOES, never
-  from how it is described, and confirm accordingly.
+- **Neither a tool's NAME nor its description is a guard.** Two import tools reach the same configuration-replacing
+  call and only one is marked destructive, the unmarked one reading as additive — and a tool this product ships
+  performs a shrink under a name that reads like a read. Before invoking a long-tail tool you have not used here, read
+  what it does (`get_tool_info`) and decide from that. A name that sounds like a read is given none of the caution a
+  verb that sounds like it acts, which is exactly what makes a misnamed mutation dangerous.
 - **If the agent's version verdict is not a clear yes, name it in the confirmation itself** (`agent_version`,
   `agent_supported`, `agent_support_note` from health), and word the two negative cases differently: *older than the
   baseline* → name both versions, the remedy is the user's and it is to update; *version could not be read* → say that,

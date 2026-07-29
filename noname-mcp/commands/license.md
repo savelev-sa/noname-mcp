@@ -7,6 +7,8 @@ description: Assign a license and report active license types and counts.
 
 Help the user with licensing. The license tools are not in the promoted set - find and call them via the meta-tools (`search_tools` -> `execute_tool`).
 
+**Before invoking a long-tail tool you have not used here, read what it DOES (`get_tool_info`).** A tool's name is not evidence: this product ships one that performs a shrink under a name that reads like a read. A reading name is given none of the caution a verb that sounds like it acts.
+
 - **Report:** active license types and counts.
 - **Assign / activate:** confirm BEFORE applying, and name what cannot be undone — this product cannot put the
   licensing state back on its own. Reversing an activation needs a licence key the product does not hold and must not
