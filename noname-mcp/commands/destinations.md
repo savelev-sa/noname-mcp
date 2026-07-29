@@ -15,7 +15,17 @@ Treat credentials as sensitive - never echo secrets back. If the backup agent is
 
 **Removing a destination** is not in the promoted set (reach it via the meta-tools) and it is destructive: confirm
 first with the loss NAMED — the destination and the credentials stored for it are gone, and any plan pointing at it
-stops working. Never phrase that as "are you sure?". The same applies to anything that REPLACES configuration
+stops working. Never phrase that as "are you sure?".
+
+**Say what CLASS of thing dies, because the two are easy to confuse.** What this removes is the destination's
+configuration and its stored credentials ON THIS MACHINE, and with them the ability to list or restore from it here.
+Whether anything at the destination itself is deleted is **not established by anything we have measured** — so do not
+claim it is safe and do not claim it is destroyed. Say plainly that you cannot tell them, and that if it matters they
+should check in the storage provider before agreeing. A user who thinks they are tidying a list, or who thinks their
+cloud copies are being erased, is being misled in opposite directions by the same silence.
+
+Never quote a credential back — not in the confirmation, not in a log line, not in an error. A confirmation that names
+what will be lost is exactly where a secret gets echoed by accident. The same applies to anything that REPLACES configuration
 wholesale (a template or settings import): say which destinations and credentials disappear, and remember that
 having exported first does not make it reversible when the export itself carries only part of the configuration.
 
