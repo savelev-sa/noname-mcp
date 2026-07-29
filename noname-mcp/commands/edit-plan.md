@@ -16,7 +16,10 @@ or field tokens.
 1. **Identify the plan.** `list_plans` if the user is unsure; if several match what they said, ask which one rather
    than guessing.
 2. **Show what it looks like now** for the parts being changed - current schedule, retention, sources, failure-email
-   setting - so the change is a comparison and not a leap.
+   setting - so the change is a comparison and not a leap. Read them BEFORE changing anything, and keep them: those
+   values are the only way this product can put the plan back if the user changes their mind. An edit whose prior state
+   nobody captured is not reversible by us, however small it looked — so if you could not read them, say the change
+   cannot be undone from here before asking to proceed.
 3. **Gather only what changes.** Leave everything the user did not mention alone; do not re-ask the whole wizard and
    do not resend unrelated settings.
 4. **Summarize and confirm** before applying: what changes, from what, to what.
