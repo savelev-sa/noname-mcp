@@ -29,6 +29,11 @@ what will be lost is exactly where a secret gets echoed by accident. The same ap
 wholesale (a template or settings import): say which destinations and credentials disappear, and remember that
 having exported first does not make it reversible when the export itself carries only part of the configuration.
 
+**And the export is not a free precaution either.** It writes to an absolute path you supply and replaces whatever is
+already there — it declares itself read-only, which is wrong under the criterion above, because it cannot put back a file
+it overwrote. So choose a path that does not exist yet, say which path you are writing to, and never suggest exporting as
+the safe step without doing both.
+
 Two cautions that apply to every destructive step here, not only to removal:
 
 - **Neither a tool's NAME nor its description is a guard.** Two import tools reach the same configuration-replacing

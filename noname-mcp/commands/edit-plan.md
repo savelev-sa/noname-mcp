@@ -38,6 +38,11 @@ none of the caution a verb that sounds like it acts.
 5. **Apply in place** with the update tool, then confirm it took effect by reading the plan back rather than by
    trusting the call's own answer.
 
+**Never describe the plan as fully shown.** What this surface can read back is not everything a plan may carry: a plan
+created outside it can hold a pre- or post-action that runs a command, and nothing here can report that — the only place
+those parameter names appear is a refusal to accept them. So summarise what you changed and what you read, and do not
+tell the user "this is your plan" as though the list were complete.
+
 ## When an in-place change is not possible
 
 Some changes may not be expressible through an update. Then, in this order:
