@@ -52,7 +52,11 @@ and words like "MCP server" or "proxy" stay out of the default narration; the te
 
 Once the service is up, `tools/list` shows a small first-class set — the common backup flows — plus three
 meta-tools (`search_tools`, `get_tool_info`, `execute_tool`) through which the long tail is reached on demand.
-Destructive tools are confirm-gated server-side.
+Tools the server has been MARKED destructive are confirm-gated server-side. The marking is per tool, so the gate
+covers what it was set on and cannot be relied on as a property of the surface: a destructive tool without the flag
+passes through ungated. This is not hypothetical — two tools have been found making the same
+configuration-replacing call with only one of them flagged. So the commands here confirm and name the loss themselves;
+the server-side gate is a second layer, never the reason to skip the first.
 
 What that means for the commands here, which is the part this repository owns: a command names a first-class tool
 directly when one exists for the job, and routes anything else through the meta-tools. Which tools are first-class
