@@ -30,6 +30,10 @@ Some changes may not be expressible through an update. Then, in this order:
 1. Say plainly what cannot be changed in place.
 2. **Name what a rebuild would cost** - the plan's history and the association with data already backed up - and
    which parts survive. Never phrase it as "are you sure?".
+   If the installed agent is outside the range this server build supports, the same prompt must say so: the installed
+   version, the baseline, and that the cost you just described was established against a different agent. Read it from
+   health (`agent_version`, `agent_supported`, `agent_support_note`) and never present a positive verdict as "verified
+   against your agent" — it is a minimum baseline, so an agent newer than anything reviewed reads as supported.
 3. Let the user decide. If they decline, leave the plan untouched and say what they still have.
 4. Only on an explicit yes: create the replacement, verify it, and tell them what was lost, not just what was made.
 

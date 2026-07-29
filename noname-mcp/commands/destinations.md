@@ -18,3 +18,13 @@ first with the loss NAMED — the destination and the credentials stored for it 
 stops working. Never phrase that as "are you sure?". The same applies to anything that REPLACES configuration
 wholesale (a template or settings import): say which destinations and credentials disappear, and remember that
 having exported first does not make it reversible when the export itself carries only part of the configuration.
+
+Two cautions that apply to every destructive step here, not only to removal:
+
+- **A tool's description is not a guard.** Two import tools reach the same configuration-replacing call and only one
+  of them is marked destructive, the unmarked one reading as additive. So decide from what the operation DOES, never
+  from how it is described, and confirm accordingly.
+- **If the installed agent is outside the supported range, name that in the confirmation itself** — installed version,
+  the baseline, and that the loss you just described was established against a different agent (`agent_version`,
+  `agent_supported`, `agent_support_note` from health). And do not call a positive verdict "verified against your
+  agent": it is a minimum baseline, so newer-than-reviewed is indistinguishable from reviewed-and-fine.
