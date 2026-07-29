@@ -35,8 +35,11 @@ none of the caution a verb that sounds like it acts.
    - Name, schedule and the notification address are not guarded. Asking about them spends the user's attention where
      nothing is at risk, which is its own defect.
 4. **Summarize and confirm** before applying: what changes, from what, to what.
-5. **Apply in place** with the update tool, then confirm it took effect by reading the plan back rather than by
-   trusting the call's own answer.
+5. **Apply in place** with the update tool, then read the plan back and COMPARE it with what was asked — not merely
+   check that a read succeeds. Whether the plan carries the retention, compression and exclusions requested is not
+   verifiable from what we send, and retention is the setting most likely to be silently wrong while every call reports
+   success; the user would find out at a restore. If the read disagrees with the request, or the setting cannot be read
+   back, report that rather than success. An unconfirmable change is not an applied one.
 
 **Never describe the plan as fully shown.** What this surface can read back is not everything a plan may carry: a plan
 created outside it can hold a pre- or post-action that runs a command, and nothing here can report that — the only place

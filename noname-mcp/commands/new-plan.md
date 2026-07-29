@@ -14,7 +14,14 @@ deletion: whatever it says will be applied later by unattended runs, with nobody
 what the plan will keep and what it will stop keeping, and let the user agree to that rather than to a number. The other
 settings are reversible by editing the plan; versions already removed under a retention rule are not.
 
-After creation, confirm the plan was saved. If the backup tools aren't available yet (setup not finished), don't expose internals — just tell the user a quick one-time setup is needed and run `/setup` first.
+**After creation, read the plan back and compare it with what the user asked for** — do not report success from the
+creation call's own answer. Check specifically the settings that decide what "backed up" MEANS: retention, compression,
+and any exclusions. Whether a created plan actually carries them is not verifiable from what we send, and retention is
+the one most likely to be silently wrong while everything reports fine — the user would discover it at a restore, when
+it decides how far back they can reach. If a setting disagrees with what was asked, or cannot be read back at all, say
+that instead of confirming; an unconfirmable setting is not a saved one.
+
+After that, confirm the plan was saved. If the backup tools aren't available yet (setup not finished), don't expose internals — just tell the user a quick one-time setup is needed and run `/setup` first.
 
 **Changing a plan that already exists: EDIT it, never delete and re-create.** There is no `/edit-plan` command, but
 the capability exists — find the plan-update tool through the meta-tools (`search_tools` -> `execute_tool`) and use
