@@ -87,9 +87,10 @@ locally by the proxy and never taken from a tool argument or from content the mo
 - The guided install pulls `Noname-MCP-Setup.exe` from this repo's latest release. If you host the installer
   somewhere else, point `NONAME_MCP_INSTALLER_URL` at it; otherwise nothing to configure.
 - The plugin never installs the backup agent silently, and the MCP server is installed only after you say yes.
-- The plugin does not update itself, and neither does the server today. This page will say otherwise only once that
-  path has been demonstrated end to end on a real machine — a reader who believes "it updates itself" stops watching
-  the version.
+- **The plugin does not update itself.** Installing a newer version is something you do, the same way you installed it.
+- The server, once installed as a service, does have an update path — it can check for a newer build and install one.
+  That is stated as a fact, not offered as a feature: it has not been demonstrated end to end on a real machine, so
+  this page does not tell you to rely on it, and you should keep an eye on the version you are running.
 
 ## License
 
