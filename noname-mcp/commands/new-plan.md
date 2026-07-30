@@ -39,10 +39,15 @@ instead. So do not offer a retention scheme before establishing which format the
 control as available because it exists in the product.
 
 **Two things to say plainly when retention comes up, neither of them reassuring:**
-- **Keeping the last version is a CHOICE on a legacy plan, not a guarantee** — it is an option with a yes/no value, so
-  a plan that was never told to keep it was not promised it. What the new format does about the last copy is not
-  established here; do not tell a user their most recent backup is protected unless you can point at the setting that
-  protects it.
+- **One narrow reassurance you MAY give, in its own terms and no wider.** The purge control — the one that removes data
+  whose retention period has expired — is documented as acting *"except current generation or latest object version"*,
+  and it names both formats. So expiry-driven purging is not the path that takes a user's most recent copy. Say that if
+  it is asked, because withholding it is its own kind of misleading.
+- **It is not a general guarantee, and the difference is the part to keep straight.** *Always keep the last version* is
+  a separate control with a yes/no value, which would have nothing to do if the last copy were unconditionally safe — so
+  a legacy plan never told to keep it was not promised it by that flag. Purge sparing the latest version says nothing
+  about version limits, a deleted plan, a removed destination, or the locally-deleted-file expiry below. Point at the
+  control that protects the copy, never at the product.
 - **One retention control expires a backup copy because the file was deleted LOCALLY**, some days afterwards. The act
   that triggers it — tidying a folder — is the very thing that later makes someone need the backup, and nobody connects
   the two. If that control is ever set or read, name it in those terms rather than as a number of days.
