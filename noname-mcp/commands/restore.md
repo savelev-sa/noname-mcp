@@ -15,6 +15,11 @@ evidence that recovery is out of reach. Attempt the restore and report what the 
 decides this, not caution: attempting one that turns out to be refused costs a failed command, while discouraging one
 that would have worked costs the data, at the only moment this product exists for.
 
+**And do not try to establish WHICH licence state it is beforehand — the local state carries no expiry date**, so a
+never-activated licence and a lapsed one are indistinguishable up front. Saying "your licence has expired" is therefore
+an assertion about something not readable from here. Say the state is not determinable, attempt the operation, and name
+what the agent refused with only after it has refused.
+
 1. Identify the plan / backed-up data and **browse available restore points** (versions).
 2. Let the user pick a version and a restore target location.
    - **A disk or volume target is a different magnitude from a folder, and this product accepts one.** The disk-image
