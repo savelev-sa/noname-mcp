@@ -69,9 +69,10 @@ The commands orchestrate the MCP tools the local server exposes; they do not def
 The server deliberately keeps `tools/list` short: the common backup flows are first-class tools, and the long tail
 of more specialized capabilities is reached on demand through meta-tools (`search_tools`, `get_tool_info`,
 `execute_tool`) instead of being carried in every request. Tools the server knows to be destructive are confirm-gated
-by the server itself, not only by the prompt — the flag is per tool, so that gate protects the tools it has been set
-on and nothing else. That is why the commands here ask for confirmation and name what would be lost on their own,
-rather than assuming a gate will catch it. The exact set belongs to the server and is documented with it — this page does not repeat
+by the server itself, not only by the prompt — and the gate is decided per CALL from its arguments, so the same tool
+can be gated one way and pass another, with a whole-tool marking being the constant case of that rule. Either way the
+gate protects what a rule was written for and nothing else. That is why the commands here ask for confirmation and
+name what would be lost on their own, rather than assuming a gate will catch it. The exact set belongs to the server and is documented with it — this page does not repeat
 the numbers, because a count copied here would drift the first time the server changes one.
 
 ## Configuration
