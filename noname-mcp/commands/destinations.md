@@ -10,6 +10,11 @@ Help the user view or set up backup destinations. Promoted storage tools: `list_
 - **List:** show configured destinations (type, name, status).
 - **Add:** gather the destination type (local, Wasabi, Amazon S3, Backblaze) and its credentials/path, create it, then **test the connection** and report pass/fail.
 - **Test:** validate an existing destination's connection.
+- **Edit an existing destination only when the user asked for that**, and say what it can break before doing it: plans
+  reach their destination THROUGH the account, so changing its settings can leave existing plans pointing at something
+  that no longer answers — and **none of those plans reports a change**. The failure appears at the next scheduled run,
+  or at a restore. After any edit, test the connection and say which plans use this destination, or say plainly that you
+  could not determine that.
 
 Treat credentials as sensitive - never echo secrets back. If the backup agent is absent, run `/setup` first.
 

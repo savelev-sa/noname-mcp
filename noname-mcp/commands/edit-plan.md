@@ -34,7 +34,9 @@ none of the caution a verb that sounds like it acts.
    - **A new alert address is taken verbatim from the user or not changed at all.** Never infer one, never carry one
      over from earlier in the conversation, and never test it by sending: a test message is real mail, sent through the
      user's own SMTP account and appearing to come from them, to whichever address is named — and the tool accepts a
-     caller-supplied one. Ask first, name the recipient when asking, and send only to an address the user gave. Redirect
+     caller-supplied one. **Leaving the address out is not the safe variant:** with none given it uses the address
+     already saved, so the "connectivity check" still mails whoever is configured. No form of that call avoids sending.
+     Ask first, name the recipient when asking, and send only to an address the user gave. Redirect
      this setting wrongly and every future failure report goes to a stranger instead of to them.
    - **THE BACKUP FORMAT IS THE ONE EDIT THAT CANNOT BE UNDONE.** Everything else on this page is reversible by
      editing again; this is not. The agent's own help states that once a plan's format is changed from current to new,

@@ -19,6 +19,11 @@ user's own SMTP account, appearing to come from them, to whichever address is na
 the CALLER supplies rather than only the saved one. Ask before sending, name the recipient in the asking, and never
 send to an address the user did not give you. Nothing here can recall a message once it has gone.
 
+**And omitting the recipient is not the cautious version of that call.** With no address given, the tool uses the
+address already saved in the settings — so a call meant as a connectivity check still mails whoever is configured,
+which may be a person who did not expect it and cannot tell it from a real alert. There is no way to exercise this
+without sending: treat every form of it as sending, and ask first.
+
 **Encryption is not a checkbox in that list — it is a password the user must still have years from now.** The agent's
 restore path takes the encryption password as an input (`-ep`), so the password is required at the moment the data is
 wanted, not only when the plan is made. Nothing in this product's captured command surface recovers, resets or hints a
