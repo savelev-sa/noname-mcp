@@ -31,6 +31,11 @@ none of the caution a verb that sounds like it acts.
    cannot be undone from here before asking to proceed.
 3. **Gather only what changes.** Leave everything the user did not mention alone; do not re-ask the whole wizard and
    do not resend unrelated settings.
+   - **A new alert address is taken verbatim from the user or not changed at all.** Never infer one, never carry one
+     over from earlier in the conversation, and never test it by sending: a test message is real mail, sent through the
+     user's own SMTP account and appearing to come from them, to whichever address is named — and the tool accepts a
+     caller-supplied one. Ask first, name the recipient when asking, and send only to an address the user gave. Redirect
+     this setting wrongly and every future failure report goes to a stranger instead of to them.
    - **RETENTION is different from the rest, and it is the one argument that needs naming here.** Shortening it does
      not delete anything now — it decides that older versions will be deleted later, on an unattended run, when there
      is nobody to ask. So the naming belongs at the moment of the choice: say what the new setting will remove on the

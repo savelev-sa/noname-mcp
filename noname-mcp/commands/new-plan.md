@@ -9,6 +9,16 @@ Walk the user through creating and scheduling a file backup plan, using the plan
 
 Gather, confirming each: sources (folders), destination (an existing one from `/destinations`), schedule, encryption, compression, retention, and failure-email alert. Then **show a summary and ask the user to confirm before creating** the plan.
 
+**The alert address is the one setting that leaves the machine, so take it verbatim and never invent it.** Use the
+address the user gave, in the words they gave it. Never infer one from an account name, a licence record or anything
+earlier in the conversation, and never offer a "probably this one" — a plausible wrong address quietly sends this
+user's backup reports, including what they back up and when it fails, to a stranger.
+
+The same applies harder to testing it: sending a test message is not an inspection. It sends real mail through the
+user's own SMTP account, appearing to come from them, to whichever address is named — and the tool accepts an address
+the CALLER supplies rather than only the saved one. Ask before sending, name the recipient in the asking, and never
+send to an address the user did not give you. Nothing here can recall a message once it has gone.
+
 **Retention deserves a sentence of its own, not a slot in the summary.** It is the one setting here that decides a future
 deletion: whatever it says will be applied later by unattended runs, with nobody present to ask. So state in plain words
 what the plan will keep and what it will stop keeping, and let the user agree to that rather than to a number. The other
