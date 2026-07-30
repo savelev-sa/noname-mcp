@@ -32,6 +32,21 @@ deletion: whatever it says will be applied later by unattended runs, with nobody
 what the plan will keep and what it will stop keeping, and let the user agree to that rather than to a number. The other
 settings are reversible by editing the plan; versions already removed under a retention rule are not.
 
+**And "retention" is not one setting — which controls exist depends on the plan's backup format, and the two sets do
+not overlap.** Keeping a limited number of versions and *always keep the last version* are both documented as **not
+compatible with the new backup format**; the generational and forever-forward controls belong to the new format
+instead. So do not offer a retention scheme before establishing which format the plan uses, and never describe a
+control as available because it exists in the product.
+
+**Two things to say plainly when retention comes up, neither of them reassuring:**
+- **Keeping the last version is a CHOICE on a legacy plan, not a guarantee** — it is an option with a yes/no value, so
+  a plan that was never told to keep it was not promised it. What the new format does about the last copy is not
+  established here; do not tell a user their most recent backup is protected unless you can point at the setting that
+  protects it.
+- **One retention control expires a backup copy because the file was deleted LOCALLY**, some days afterwards. The act
+  that triggers it — tidying a folder — is the very thing that later makes someone need the backup, and nobody connects
+  the two. If that control is ever set or read, name it in those terms rather than as a number of days.
+
 **Report the protection actually in effect, not merely that a plan was created — and that includes what nobody chose.**
 Three of this product's defaults narrow a backup silently, and each one surfaces at the restore, the single moment a
 user cannot absorb it. Unless the plan was created asking otherwise, say plainly:
