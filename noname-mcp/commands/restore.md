@@ -27,20 +27,22 @@ Guide the user through a restore. Promoted restore tools: `list_restore_points` 
      appear, because a user who agreed to "restore to D:\Restore" and finds an empty-looking folder concludes the
      restore failed.
 3. **Show a summary and require explicit user confirmation before restoring — and NAME what will be lost**, never "are you sure?": the target location, that files already there will be REPLACED by the chosen version, and which version that is. If you cannot tell what the target already contains, say so plainly and offer an empty folder as the target instead.
-   - **If the agent's version verdict is not a clear yes, say so IN THIS PROMPT** — nobody reads a health field while
-     confirming a restore, so mentioning it anywhere else does not count. Read `agent_supported`, `agent_support_note`
-     and `agent_version` from health, and word the two negative cases DIFFERENTLY, because the remedy differs:
-     - the note says the installed agent is **older** than the baseline → name the installed version and the baseline,
-       and that what you just described as "will be lost" was established against a different agent. The remedy is the
-       user's: update the agent;
-     - the note says the version **could not be read or parsed** → say exactly that. Do NOT describe the agent as out
-       of range: an unknown presented as a finding is a false statement about their machine.
-   - **Never use the word "unsupported", and never suggest changing or downgrading the agent.** A user told their
-     backup agent is unsupported may downgrade it — and downgrading the agent that holds the backup data destroys data
-     through wording alone.
-   - A positive verdict is not a review. It means only "not older than the oldest reviewed version": an agent newer
-     than anything ever reviewed reports exactly like a reviewed one, so never present it as "verified against your
-     agent" and never claim it was checked.
+   - **Unless the agent's version state is `Reviewed`, say so IN THIS PROMPT** — nobody reads a health field while
+     confirming a restore, so mentioning it anywhere else does not count. Read `agent_support_state`,
+     `agent_support_note` and `agent_version` from health. The four states are worded DIFFERENTLY because the remedy
+     differs, and one of them has no user remedy at all:
+     - `Reviewed` — the only state that may be presented as checked against this machine. Say nothing extra.
+     - `OlderThanReviewedRange` — name the installed version and the oldest reviewed one, and say that what you just
+       described as "will be lost" was established against a different agent. The remedy is the user's: update.
+     - `NewerThanAnythingReviewed` — name the installed version and the newest REVIEWED one, say nothing is known to be
+       wrong, and that closing the gap is our work rather than theirs. **Never call it unsupported and never invite them
+       to change the agent.** This is the state a blameless user meets by letting the vendor ship.
+     - `CannotBeDetermined` — say the version could not be read. Do NOT describe the agent as out of range, and do not
+       withhold anything on the strength of it: an unknown presented as a finding is a false statement about their
+       machine, and refusing on it charges them for our own failed read.
+   - **Never use the word "unsupported", and never suggest changing or downgrading the agent** in any state. A user
+     told their backup agent is unsupported may downgrade it — and downgrading the agent that holds the backup data
+     destroys data through wording alone.
 4. After restore, verify the restored content matches the chosen version and report.
 
 If the agent is absent, run `/setup` first.

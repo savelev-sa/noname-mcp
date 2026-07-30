@@ -53,13 +53,13 @@ Some changes may not be expressible through an update. Then, in this order:
 1. Say plainly what cannot be changed in place.
 2. **Name what a rebuild would cost** - the plan's history and the association with data already backed up - and
    which parts survive. Never phrase it as "are you sure?".
-   If the agent's version verdict is not a clear yes, the SAME prompt must say so, and the two negative cases are
-   worded differently (`agent_version`, `agent_supported`, `agent_support_note` from health): *older than the baseline*
-   → name both versions and that the cost you described was established against a different agent, the remedy being to
-   update; *version could not be read* → say that and nothing about being out of range. Never say "unsupported" and
-   never suggest changing or downgrading the agent — downgrading the agent that holds the backup data destroys data
-   through wording alone. A positive verdict is not a review: it means only "not older than the oldest reviewed
-   version".
+   Unless `agent_support_state` is `Reviewed`, the SAME prompt must say so, worded per state (`agent_version`,
+   `agent_support_note` from health): `OlderThanReviewedRange` → name both versions and that the cost you described was
+   established against a different agent, the remedy being to update; `NewerThanAnythingReviewed` → name the installed
+   and the newest reviewed version, say nothing is known to be wrong and that closing the gap is ours, never call it
+   unsupported and never invite a change; `CannotBeDetermined` → say the version could not be read and nothing about
+   being out of range. Never say "unsupported" in any state and never suggest downgrading the agent — downgrading the
+   agent that holds the backup data destroys data through wording alone.
 3. Let the user decide. If they decline, leave the plan untouched and say what they still have.
 4. Only on an explicit yes: create the replacement, verify it, and tell them what was lost, not just what was made.
 
