@@ -6,8 +6,13 @@ description: Change an existing backup plan - schedule, retention, sources, noti
 # /edit-plan - change an existing plan
 
 Modify a plan the user already has. **Always in place. Never by rebuilding.** An in-place change keeps the plan's
-identity, its session history and its backup data; deleting and re-creating silently discards all three, while
-looking like the same outcome to anyone reading the plan list afterwards.
+identity, its session history and its link to the data already backed up; deleting and re-creating silently discards
+all three, while looking like the same outcome to anyone reading the plan list afterwards.
+
+**Be exact about which of those the data itself is.** Deleting a plan does NOT delete what it backed up — the stored
+copies survive at the destination, and a separate tool exists for removing them. What a rebuild costs is the history
+and the plan's association with those copies, not the copies. Say that plainly whenever a rebuild comes up: a user who
+believes their backups died with the plan may go and do something far worse to recover from a loss that did not happen.
 
 Plan updating is not in the promoted set - find the plan-update tool through the meta-tools (`search_tools` ->
 `get_tool_info` -> `execute_tool`). Talk to the user in plain language: describe choices in words, not tool names
