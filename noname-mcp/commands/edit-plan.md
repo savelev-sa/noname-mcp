@@ -45,7 +45,22 @@ none of the caution a verb that sounds like it acts.
      the call, that the format change is permanent and getting agreement to THAT and not merely to the feature. Note
      the trade runs both ways: block-level backup is **not compatible** with the new format, so this edit can remove a
      capability while adding one, and synthetic full is additionally **not supported by all storage providers**. If the
-     user only wanted the feature, the honest answer may be that it is not available on this plan.
+     user only wanted the feature, the honest answer may be that it is not available on this plan. **And the trade
+     reaches the schedule too:** weekly and real-time recurrence are reported not to exist in the new format, so a
+     format change can silently redefine WHEN this user is protected, not only what is stored. Read the schedule back
+     afterwards and say what it became — a cadence that quietly changed is the kind of loss nobody notices until the
+     gap matters.
+   - **A plan has TWO schedules, and the second one fails quietly.** Besides the ordinary cadence there is a full
+     force-full schedule with its own complete set of controls — thirteen of them, mirroring the first: its own day,
+     weekday, repeat interval, daily window. Changing or disabling the ordinary schedule leaves that one untouched and
+     vice versa. **The force-full one is the dangerous half to lose:** backups keep running and keep reporting success
+     while the chain grows with no fresh full base, so nothing looks wrong until a restore needs that base. When you
+     touch either schedule, read BOTH back and report them separately — never as "the schedule".
+   - **Read a schedule before disabling it, because this product may be the only place it is written down.** Disabling
+     is reversible as a setting and irreversible in effect: the runs that did not happen cannot be recovered, there is
+     nothing to recover them from, and re-enabling means re-specifying the cadence from scratch. So capture the values
+     first and report exactly what was turned off. Do not add a confirmation prompt to a disable the user asked for —
+     that is the dilution this file warns about elsewhere — but never disable one silently either.
    - **RETENTION is different from the rest, and it is the one argument that needs naming here.** Shortening it does
      not delete anything now — it decides that older versions will be deleted later, on an unattended run, when there
      is nobody to ask. So the naming belongs at the moment of the choice: say what the new setting will remove on the
