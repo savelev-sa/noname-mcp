@@ -1,18 +1,29 @@
 ---
 name: new-plan
-description: Guided creation and scheduling of a file backup plan (sources, destination, encryption, compression, retention, failure email).
+description: Guided creation and scheduling of a file backup plan (sources, destination, encryption, compression, retention, failure alerts).
 ---
 
 # /new-plan - create a file backup plan
 
 Walk the user through creating and scheduling a file backup plan, using the plan-creation tools (e.g. `create_file_backup_plan`). Talk to the user in plain, non-technical language — describe choices in words, not tool or field tokens.
 
-Gather, confirming each: sources (folders), destination (an existing one from `/destinations`), schedule, encryption, compression, retention, and failure-email alert. Then **show a summary and ask the user to confirm before creating** the plan.
+Gather, confirming each: sources (folders), destination (an existing one from `/destinations`), schedule, encryption, compression, retention, and whether the plan should raise a failure alert (a yes/no/only-on-failure choice, NOT an address). Then **show a summary and ask the user to confirm before creating** the plan.
 
-**The alert address is the one setting that leaves the machine, so take it verbatim and never invent it.** Use the
-address the user gave, in the words they gave it. Never infer one from an account name, a licence record or anything
-earlier in the conversation, and never offer a "probably this one" — a plausible wrong address quietly sends this
-user's backup reports, including what they back up and when it fails, to a stranger.
+**A plan cannot choose WHO is alerted — only WHETHER.** The plan's own notification setting is a three-value choice
+(on failure only / on / off) and nothing else: there is no per-plan recipient. **Who receives the mail is a
+machine-wide setting shared by every plan on that machine.** So never ask the user for "the address for this plan" and
+never accept one — a per-plan address promises routing that does not exist. If the user wants alerts: set the plan's
+choice, then READ BACK the machine-wide recipient and tell them who will actually be told.
+
+**Why this one is worth the extra sentence.** A user who believes each plan mails its own owner gets mail that all goes
+to one address, and **nothing reports the substitution**. An alert is bought so somebody learns about a failure without
+looking — so a misrouted one is discovered by *not hearing about an incident*, which from the inside is
+indistinguishable from everything being fine.
+
+**And changing that machine-wide address changes it for every plan**, including ones this user did not create and may
+not know about. Say so before changing it, take it verbatim from the user, never infer one from an account name or a
+licence record, and never offer a "probably this one" — a plausible wrong address quietly sends this user's backup
+reports, including what they back up and when it fails, to a stranger.
 
 The same applies harder to testing it: sending a test message is not an inspection. It sends real mail through the
 user's own SMTP account, appearing to come from them, to whichever address is named — and the tool accepts an address

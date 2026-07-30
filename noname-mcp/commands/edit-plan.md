@@ -1,6 +1,6 @@
 ---
 name: edit-plan
-description: Change an existing backup plan - schedule, retention, sources, notification email - in place, without rebuilding it.
+description: Change an existing backup plan - schedule, retention, sources, whether it raises failure alerts - in place, without rebuilding it.
 ---
 
 # /edit-plan - change an existing plan
@@ -24,14 +24,19 @@ none of the caution a verb that sounds like it acts.
 
 1. **Identify the plan.** `list_plans` if the user is unsure; if several match what they said, ask which one rather
    than guessing.
-2. **Show what it looks like now** for the parts being changed - current schedule, retention, sources, failure-email
-   setting - so the change is a comparison and not a leap. Read them BEFORE changing anything, and keep them: those
+2. **Show what it looks like now** for the parts being changed - current schedule, retention, sources, whether it
+   alerts on failure - so the change is a comparison and not a leap. Read them BEFORE changing anything, and keep them: those
    values are the only way this product can put the plan back if the user changes their mind. An edit whose prior state
    nobody captured is not reversible by us, however small it looked — so if you could not read them, say the change
    cannot be undone from here before asking to proceed.
 3. **Gather only what changes.** Leave everything the user did not mention alone; do not re-ask the whole wizard and
    do not resend unrelated settings.
-   - **A new alert address is taken verbatim from the user or not changed at all.** Never infer one, never carry one
+   - **A plan has no recipient of its own — only whether it alerts.** The per-plan setting is a three-value
+     choice; WHO is told is a machine-wide address every plan shares. Never accept a per-plan address, and when
+     reporting the plan's alert setting, read the machine-wide recipient back so the user learns who is actually
+     told. **Changing that address changes it for every plan on the machine**, including ones this user never
+     created — say so before changing it.
+   - **The machine-wide address is taken verbatim from the user or not changed at all.** Never infer one, never carry one
      over from earlier in the conversation, and never test it by sending: a test message is real mail, sent through the
      user's own SMTP account and appearing to come from them, to whichever address is named — and the tool accepts a
      caller-supplied one. **Leaving the address out is not the safe variant:** with none given it uses the address
@@ -67,8 +72,9 @@ none of the caution a verb that sounds like it acts.
      next run of this named plan, in terms of what the user keeps and stops keeping, and get agreement to THAT rather
      than to a number. If you cannot tell how many versions fall outside the new setting, say so instead of implying
      the change is free.
-   - Name, schedule and the notification address are not guarded. Asking about them spends the user's attention where
-     nothing is at risk, which is its own defect.
+   - Name and schedule are not guarded. Asking about them spends the user's attention where nothing is at risk,
+     which is its own defect. The alert RECIPIENT is not in that group and never was: it is machine-wide, so changing
+     it reaches every plan — that one is named before it is touched.
 4. **Summarize and confirm** before applying: what changes, from what, to what.
 5. **Apply in place** with the update tool, then read the plan back and COMPARE it with what was asked — not merely
    check that a read succeeds. Whether the plan carries the retention, compression and exclusions requested is not
