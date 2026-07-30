@@ -41,8 +41,8 @@ Two cautions that apply to every destructive step here, not only to removal:
   performs a shrink under a name that reads like a read. Before invoking a long-tail tool you have not used here, read
   what it does (`get_tool_info`) and decide from that. A name that sounds like a read is given none of the caution a
   verb that sounds like it acts, which is exactly what makes a misnamed mutation dangerous.
-- **Unless `agent_support_state` is `Reviewed`, name it in the confirmation itself** (with `agent_version` and
-  `agent_support_note` from health), worded per state because the remedies differ: `OlderThanReviewedRange` → name both
+- **Unless `agentSupportState` is `Reviewed`, name it in the confirmation itself** (with `agentVersion` and
+  `agentSupportNote` from health), worded per state because the remedies differ: `OlderThanReviewedRange` → name both
   versions, the remedy is the user's and it is to update; `NewerThanAnythingReviewed` → name the installed and the newest
   reviewed version, say nothing is known to be wrong and that closing the gap is ours, never call it unsupported and
   never invite a change; `CannotBeDetermined` → say the version could not be read, do not call the agent out of range,

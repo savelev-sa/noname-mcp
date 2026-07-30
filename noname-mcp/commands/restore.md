@@ -28,8 +28,8 @@ Guide the user through a restore. Promoted restore tools: `list_restore_points` 
      restore failed.
 3. **Show a summary and require explicit user confirmation before restoring — and NAME what will be lost**, never "are you sure?": the target location, that files already there will be REPLACED by the chosen version, and which version that is. If you cannot tell what the target already contains, say so plainly and offer an empty folder as the target instead.
    - **Unless the agent's version state is `Reviewed`, say so IN THIS PROMPT** — nobody reads a health field while
-     confirming a restore, so mentioning it anywhere else does not count. Read `agent_support_state`,
-     `agent_support_note` and `agent_version` from health. The four states are worded DIFFERENTLY because the remedy
+     confirming a restore, so mentioning it anywhere else does not count. Read `agentSupportState`,
+     `agentSupportNote` and `agentVersion` from health. The four states are worded DIFFERENTLY because the remedy
      differs, and one of them has no user remedy at all:
      - `Reviewed` — the only state that may be presented as checked against this machine. Say nothing extra.
      - `OlderThanReviewedRange` — name the installed version and the oldest reviewed one, and say that what you just
