@@ -37,6 +37,12 @@ deletion: whatever it says will be applied later by unattended runs, with nobody
 what the plan will keep and what it will stop keeping, and let the user agree to that rather than to a number. The other
 settings are reversible by editing the plan; versions already removed under a retention rule are not.
 
+**Saying nothing about retention does not mean nothing gets deleted.** A plan created without a retention setting takes
+the agent's own default, and that default deletes: measured on a created plan's stored definition, no retention flag
+records "use default settings" with a **90-day** period. So "we did not set a retention rule" and "nothing will be
+removed" are different statements, and only the first is true. Never report the absence of a choice as the absence of a
+consequence — name the default and let the user accept it deliberately, exactly as you would a value they picked.
+
 **And "retention" is not one setting — which controls exist depends on the plan's backup format, and the two sets do
 not overlap.** Keeping a limited number of versions and *always keep the last version* are both documented as **not
 compatible with the new backup format**; the generational and forever-forward controls belong to the new format
