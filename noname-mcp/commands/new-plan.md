@@ -24,6 +24,21 @@ deletion: whatever it says will be applied later by unattended runs, with nobody
 what the plan will keep and what it will stop keeping, and let the user agree to that rather than to a number. The other
 settings are reversible by editing the plan; versions already removed under a retention rule are not.
 
+**Report the protection actually in effect, not merely that a plan was created — and that includes what nobody chose.**
+Three of this product's defaults narrow a backup silently, and each one surfaces at the restore, the single moment a
+user cannot absorb it. Unless the plan was created asking otherwise, say plainly:
+
+- **NTFS permissions are not backed up.** A restore returns the files without their access control.
+- **System and hidden files are excluded.** This one inverts the usual reading — the default here is to EXCLUDE, so
+  leaving the option alone is what leaves the files out.
+- **EFS-encrypted files are not preserved as encrypted.** Say that and stop: what the agent does with such a file
+  under this default — stores it decrypted, or skips it — is not established here, and the two deserve different
+  sentences. Note also that the option to keep them encrypted applies only to plans using the new backup format, so it
+  is not simply available on request.
+
+"Back up my documents" is a request about the documents, not about flags. A user who is never told what was left out
+learns it years later, from a restore that returns less than they believed they had.
+
 **After creation, read the plan back and compare it with what the user asked for** — do not report success from the
 creation call's own answer. Check specifically the settings that decide what "backed up" MEANS: retention, compression,
 and any exclusions. Whether a created plan actually carries them is not verifiable from what we send, and retention is
