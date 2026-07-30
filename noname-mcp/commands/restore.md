@@ -25,6 +25,13 @@ that would have worked costs the data, at the only moment this product exists fo
      earlier step in the conversation.
    - The tool's own confirmation fires, but it does not name which disk — so the naming is this command's job, not
      something the gate has already done for you.
+   - **When the server does refuse with its own sentence, quote that sentence — do not compose a rival one.** A
+     refusal here arrives as `This will <what>`, written by the code that performs the operation. Pass it through in
+     those words and add what it cannot know, such as which disk. Restating the same cost in your own phrasing tells
+     the user the price twice in two voices, and the two will drift apart the moment either side is edited.
+   - **Do not read that refusal as coverage.** Only a small minority of this product's tools emit it at all — a
+     destructive tool nobody wrote a rule for is refused by nothing. For everything reached through the meta-tools,
+     your confirmation is the only one the user will ever see.
    - **Omitting the destination is not the neutral choice.** The quick-restore path restores to the ORIGINAL location
      when no destination is given — that is restoring over the user's current files. Never leave it out to keep a call
      simple; choose it deliberately or not at all, and if it is chosen, that IS the overwrite the confirmation must name.
