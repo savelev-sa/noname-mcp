@@ -47,6 +47,20 @@ control as available because it exists in the product.
   that triggers it — tidying a folder — is the very thing that later makes someone need the backup, and nobody connects
   the two. If that control is ever set or read, name it in those terms rather than as a number of days.
 
+**These settings are not independently choosable, and the summary you show must not imply they are.** Two kinds of
+constraint apply, and both are stated in the agent's own help:
+
+- **Which side of the format fork a setting lives on.** Purge-by-default, purge delay and the force-full schedule are
+  documented as *not compatible with the new backup format*; the generational (GFS) controls and forever-forward
+  incremental exist only on the new side. So a plan cannot have a force-full schedule and generational retention — not
+  because one is a bad idea, but because they are on opposite sides of a choice made once.
+- **Pairs that exclude each other on the SAME side.** Generational retention is documented as not compatible with a
+  forever-forward incremental schedule, so offering both is offering a combination the agent will refuse.
+
+Practical rule: gather what the user wants, then establish the plan's format, then say which of their wishes are
+available together — in that order. Confirming a set of settings the agent will reject wastes the user's decision and
+teaches them that the confirmation was not worth reading.
+
 **Report the protection actually in effect, not merely that a plan was created — and that includes what nobody chose.**
 Three of this product's defaults narrow a backup silently, and each one surfaces at the restore, the single moment a
 user cannot absorb it. Unless the plan was created asking otherwise, say plainly:
