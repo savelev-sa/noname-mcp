@@ -67,7 +67,7 @@ available together — in that order. Confirming a set of settings the agent wil
 teaches them that the confirmation was not worth reading.
 
 **Report the protection actually in effect, not merely that a plan was created — and that includes what nobody chose.**
-Three of this product's defaults narrow a backup silently, and each one surfaces at the restore, the single moment a
+Three defaults of the **file** backup plan narrow it silently, and each one surfaces at the restore, the single moment a
 user cannot absorb it. Unless the plan was created asking otherwise, say plainly:
 
 - **NTFS permissions are not backed up.** A restore returns the files without their access control.
@@ -88,6 +88,12 @@ additionally **not supported by all storage providers**. Never present the forma
 
 "Back up my documents" is a request about the documents, not about flags. A user who is never told what was left out
 learns it years later, from a restore that returns less than they believed they had.
+
+**Do not carry any of this to another plan family.** These three were read from the file-plan verb, and the plan
+families are **not symmetric** — the option for keeping encrypted files encrypted has been reported absent from the
+image-plan help entirely, not merely defaulted differently. So for a disk-image or any non-file plan, none of the three
+sentences above is established: read that family's own options before saying anything about what it protects. A default
+measured on one verb is a fact about that verb.
 
 **After creation, read the plan back and compare it with what the user asked for** — do not report success from the
 creation call's own answer. Check specifically the settings that decide what "backed up" MEANS: retention, compression,
