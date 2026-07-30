@@ -33,8 +33,16 @@ user cannot absorb it. Unless the plan was created asking otherwise, say plainly
   leaving the option alone is what leaves the files out.
 - **EFS-encrypted files are not preserved as encrypted.** Say that and stop: what the agent does with such a file
   under this default — stores it decrypted, or skips it — is not established here, and the two deserve different
-  sentences. Note also that the option to keep them encrypted applies only to plans using the new backup format, so it
-  is not simply available on request.
+  sentences. The option to keep them encrypted applies only to plans using the new backup format, so it is not simply
+  available on request — and read the next paragraph before offering to change that.
+
+**The backup format is a one-way door, and two of the options above lead to it.** The agent's own help says it in as
+many words: once a plan's format is changed from current to new, *the return to the current format will not be
+possible*. So never switch the format in order to satisfy a request for an option that requires it — keeping EFS files
+encrypted, or synthetic full backups — without saying first, in the same breath, that the change is permanent and that
+the user is agreeing to the format and not just to the option. The trade is real in both directions: block-level backup
+is **not compatible** with the new format, so a plan gaining one capability can lose another, and synthetic full is
+additionally **not supported by all storage providers**. Never present the format as a detail of a feature request.
 
 "Back up my documents" is a request about the documents, not about flags. A user who is never told what was left out
 learns it years later, from a restore that returns less than they believed they had.

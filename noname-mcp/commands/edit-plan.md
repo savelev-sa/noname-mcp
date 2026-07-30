@@ -36,6 +36,14 @@ none of the caution a verb that sounds like it acts.
      user's own SMTP account and appearing to come from them, to whichever address is named — and the tool accepts a
      caller-supplied one. Ask first, name the recipient when asking, and send only to an address the user gave. Redirect
      this setting wrongly and every future failure report goes to a stranger instead of to them.
+   - **THE BACKUP FORMAT IS THE ONE EDIT THAT CANNOT BE UNDONE.** Everything else on this page is reversible by
+     editing again; this is not. The agent's own help states that once a plan's format is changed from current to new,
+     *the return to the current format will not be possible*. Never change it to deliver some other option the user
+     asked for — keeping EFS files encrypted and synthetic full both require the new format — without saying, before
+     the call, that the format change is permanent and getting agreement to THAT and not merely to the feature. Note
+     the trade runs both ways: block-level backup is **not compatible** with the new format, so this edit can remove a
+     capability while adding one, and synthetic full is additionally **not supported by all storage providers**. If the
+     user only wanted the feature, the honest answer may be that it is not available on this plan.
    - **RETENTION is different from the rest, and it is the one argument that needs naming here.** Shortening it does
      not delete anything now — it decides that older versions will be deleted later, on an unattended run, when there
      is nobody to ask. So the naming belongs at the moment of the choice: say what the new setting will remove on the
