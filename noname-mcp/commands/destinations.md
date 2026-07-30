@@ -13,6 +13,23 @@ Help the user view or set up backup destinations. Promoted storage tools: `list_
 
 Treat credentials as sensitive - never echo secrets back. If the backup agent is absent, run `/setup` first.
 
+**Two Amazon S3 settings decide things nobody discovers until the restore, so name them when the destination is set up
+and never leave them to a default.** Both are documented as applying to Amazon S3 storage only, so do not offer either
+for another provider.
+
+- **Storage class is a recovery-time decision wearing a price tag.** The accepted values include `Glacier`,
+  `GlacierInstantRetrieval` and `GlacierDeepArchive` alongside `Standard`. An archival class means a restore that takes
+  **hours and costs money to retrieve**, and nothing about the plan, the destination or a successful backup looks any
+  different until somebody needs the data. If a user is choosing on price, say what the cheap answer costs at the moment
+  it is used.
+- **Server-side encryption is off unless asked for** — its documented default is `no`. So data at rest at the
+  destination is unencrypted by default, which is a different question from the plan's own encryption password and needs
+  asking separately.
+
+The general rule these two are instances of: **anything a user would only find out at the restore must be said at
+setup.** "Visible if it goes wrong" describes a failure, not a setting — a mistyped bucket is visible, a recovery that
+takes six hours is not.
+
 **Removing a destination** is not in the promoted set (reach it via the meta-tools) and it is destructive: confirm
 first with the loss NAMED — the destination and the credentials stored for it are gone, and any plan pointing at it
 stops working. Never phrase that as "are you sure?".
