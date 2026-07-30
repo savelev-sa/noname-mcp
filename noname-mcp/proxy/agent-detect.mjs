@@ -16,13 +16,21 @@ import { existsSync } from 'node:fs';
 
 const programFiles = process.env['ProgramFiles'] || 'C:\\Program Files';
 
-/** Default install directories — the same fallback list the server-side detector uses. */
+/**
+ * Default install directories — the same fallback list the server-side detector uses.
+ *
+ * DO NOT widen this to a PATH lookup, a recursive search, or a third vendor's directory. The engine behind this
+ * product is also shipped WHITE-LABELLED: another company's build installs an executable of the same name under its
+ * own directory, and its file-version strings still name the original vendor, so the binary cannot tell you whose it
+ * is. A path plus a file name is not an identity — only the directory a known product owns is evidence. The list is
+ * short on purpose, and a machine carrying a rebranded build should read as "our agent is absent", which is true.
+ */
 export const AGENT_INSTALL_DIRS = [
   `${programFiles}\\MSP360\\Managed Backup`,
   `${programFiles}\\CloudBerryLab\\CloudBerry Backup`,
 ];
 
-/** The CLI executable whose presence proves the product is installed AND drivable. */
+/** The CLI executable whose presence in one of those directories proves the product is installed AND drivable. */
 export const AGENT_EXE = 'cbb.exe';
 
 /**
