@@ -9,6 +9,12 @@ Guide the user through a restore. Promoted restore tools: `list_restore_points` 
 
 **Before invoking a long-tail tool you have not used here, read what it DOES (`get_tool_info`).** A tool's name is not evidence: this product ships one that performs a shrink under a name that reads like a read. A reading name is given none of the caution a verb that sounds like it acts.
 
+**Never withhold a restore on licence grounds, and never announce that one is unavailable because of a licence.** The
+agent's own table does not gate restore by plan type, so a licence state — expired, unactivated, unreadable — is not
+evidence that recovery is out of reach. Attempt the restore and report what the agent actually answers. The asymmetry
+decides this, not caution: attempting one that turns out to be refused costs a failed command, while discouraging one
+that would have worked costs the data, at the only moment this product exists for.
+
 1. Identify the plan / backed-up data and **browse available restore points** (versions).
 2. Let the user pick a version and a restore target location.
    - **A disk or volume target is a different magnitude from a folder, and this product accepts one.** The disk-image
