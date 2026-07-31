@@ -26,6 +26,11 @@ never-activated licence and a lapsed one are indistinguishable up front. Saying 
 an assertion about something not readable from here. Say the state is not determinable, attempt the operation, and name
 what the agent refused with only after it has refused.
 
+**The concrete harm of guessing that word, since it is not obvious:** a licence can be perfectly valid and merely not
+activated on THIS machine. Telling that user their licence expired sends them to renew a subscription they already
+have — money spent, and the actual problem, activation, still there when they come back. "Blocked" and "expired" are
+two different statements and only the first is ever observable here.
+
 1. Identify the plan / backed-up data and **browse available restore points** (versions).
 2. Let the user pick a version and a restore target location.
    - **A disk or volume target is a different magnitude from a folder, and this product accepts one.** The disk-image
