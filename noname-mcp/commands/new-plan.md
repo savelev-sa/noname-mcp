@@ -133,7 +133,9 @@ the one most likely to be silently wrong while everything reports fine — the u
 it decides how far back they can reach. If a setting disagrees with what was asked, or cannot be read back at all, say
 that instead of confirming; an unconfirmable setting is not a saved one.
 
-**The SCHEDULE is the one thing you cannot read back, and that changes what you may say about it.** Measured: the
+**The SCHEDULE is the one thing you cannot read back THROUGH THIS SURFACE, and that changes what you may say about it.**
+The scope is deliberate: the recurrence is not unknowable, it is unreachable from here, and stating the stronger claim
+would be asserting something nobody measured. Measured: the
 agent's plan listing returns name, type, id and last result — **no schedule, in either the short or the full form** —
 and no tool in this surface exposes one. A plan's actual recurrence exists only in its definition on disk, which
 nothing here reads.
