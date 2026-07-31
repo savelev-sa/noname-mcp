@@ -133,11 +133,17 @@ the one most likely to be silently wrong while everything reports fine — the u
 it decides how far back they can reach. If a setting disagrees with what was asked, or cannot be read back at all, say
 that instead of confirming; an unconfirmable setting is not a saved one.
 
-**Read the SCHEDULE back in the same breath, and compare the FREQUENCY rather than the number.** A plan asked to repeat
-every two days has been recorded as running monthly — not a wrong interval but a wrong KIND of interval, thirty times
-rarer, on the one thing a backup plan exists to do. Nothing about that looks wrong in a plan list, and the user finds
-out when they need a copy that was never taken. So state the cadence back in words the user can check — *"this will run
-once a month"* — never as the value that was sent.
+**The SCHEDULE is the one thing you cannot read back, and that changes what you may say about it.** Measured: the
+agent's plan listing returns name, type, id and last result — **no schedule, in either the short or the full form** —
+and no tool in this surface exposes one. A plan's actual recurrence exists only in its definition on disk, which
+nothing here reads.
+
+So do not tell the user the cadence was confirmed; nothing here can confirm it. State in plain words what you ASKED
+for — *"I asked for this to run every two days"* — and say plainly that this surface cannot read a schedule back to
+check it. **The reason that matters, and it is not hypothetical:** a plan asked to repeat every two days has been
+recorded as running MONTHLY — not a wrong interval but a wrong kind of interval, thirty times rarer, on the one thing a
+backup plan exists to do. Nothing in any listing would have shown it, and the user finds out when they need a copy that
+was never taken.
 
 After that, confirm the plan was saved. If the backup tools aren't available yet (setup not finished), don't expose internals — just tell the user a quick one-time setup is needed and run `/setup` first.
 

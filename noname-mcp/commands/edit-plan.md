@@ -52,15 +52,18 @@ none of the caution a verb that sounds like it acts.
      capability while adding one, and synthetic full is additionally **not supported by all storage providers**. If the
      user only wanted the feature, the honest answer may be that it is not available on this plan. **And the trade
      reaches the schedule too:** weekly and real-time recurrence are reported not to exist in the new format, so a
-     format change can silently redefine WHEN this user is protected, not only what is stored. Read the schedule back
-     afterwards and say what it became — a cadence that quietly changed is the kind of loss nobody notices until the
-     gap matters.
+     format change can silently redefine WHEN this user is protected, not only what is stored — **and this surface
+     cannot read a schedule back to tell you what it became.** So say that the change may alter the cadence and that
+     you have no way to check it here; a cadence that quietly changed is the kind of loss nobody notices until the gap
+     matters, and pretending it was verified is worse than naming the blind spot.
    - **A plan has TWO schedules, and the second one fails quietly.** Besides the ordinary cadence there is a full
      force-full schedule with its own complete set of controls — thirteen of them, mirroring the first: its own day,
      weekday, repeat interval, daily window. Changing or disabling the ordinary schedule leaves that one untouched and
      vice versa. **The force-full one is the dangerous half to lose:** backups keep running and keep reporting success
      while the chain grows with no fresh full base, so nothing looks wrong until a restore needs that base. When you
-     touch either schedule, read BOTH back and report them separately — never as "the schedule".
+     touch either schedule, report BOTH separately — never as "the schedule". **And you cannot read either of them
+     back:** the agent's plan listing returns no schedule in any form, and nothing in this surface exposes one, so say
+     what you asked for and say that it cannot be verified from here rather than implying it was checked.
    - **Read a schedule before disabling it, because this product may be the only place it is written down.** Disabling
      is reversible as a setting and irreversible in effect: the runs that did not happen cannot be recovered, there is
      nothing to recover them from, and re-enabling means re-specifying the cadence from scratch. So capture the values
