@@ -9,6 +9,12 @@ Report data figures. The reporting tools (backed-up volume per plan/session; occ
 
 **Before invoking a long-tail tool you have not used here, read what it DOES (`get_tool_info`).** A tool's name is not evidence: this product ships one that performs a shrink under a name that reads like a read. A reading name is given none of the caution a verb that sounds like it acts.
 
+**And the RESULT is not evidence either — this is the trap that matters on a reporting command.** A tool can return an
+object shaped like information while having changed the machine to produce it: this product shipped one that answered a
+question about the repository and shrank the database on every call, unannounced. Nothing in the answer looked like a
+mutation, which is exactly why it stayed invisible. So judge a tool by what `get_tool_info` says it does, never by how
+its output looks — and if the description does not say, treat the call as one that may act.
+
 - Backed-up volume: per plan and/or per session.
 - Occupied space: per destination/storage account.
 
