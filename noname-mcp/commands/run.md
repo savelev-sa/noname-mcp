@@ -13,8 +13,8 @@ Start a backup plan immediately, regardless of its schedule. Promoted tools: `li
 2. Confirm the mode: incremental (default), full, or differential — transaction-log applies to SQL plans only.
 3. **Confirm with the user before starting** the run.
 4. **Do not report that a backup started because the call said so.** The run tool returns success when the command line
-   was accepted, which is not the same as the plan running: the test zone has observed "Plan is started" while the plan
-   never ran, because the agent's plan endpoint was not listening. So confirm from the plan's own state — check progress
+   was accepted, which is not the same as the plan running: `"Plan is started"` has been observed while the plan never
+   ran, because the agent's plan endpoint was not listening. So confirm from the plan's own state — check progress
    or the session list — and tell the user what you actually saw.
 5. If it did start, say so and how to follow it (`/status`). If it did not, or you cannot tell within a reasonable wait,
    say THAT — an unconfirmed start reported as a start is worse than a visible failure, because the user stops watching
