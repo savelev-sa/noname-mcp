@@ -13,6 +13,7 @@
  * cbb.exe inside it.
  */
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 const programFiles = process.env['ProgramFiles'] || 'C:\\Program Files';
 
