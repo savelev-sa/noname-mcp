@@ -132,12 +132,20 @@ image-plan help entirely, not merely defaulted differently. So for a disk-image 
 sentences above is established: read that family's own options before saying anything about what it protects. A default
 measured on one verb is a fact about that verb.
 
-**After creation, read the plan back and compare it with what the user asked for** — do not report success from the
-creation call's own answer. Check specifically the settings that decide what "backed up" MEANS: retention, compression,
-and any exclusions. Whether a created plan actually carries them is not verifiable from what we send, and retention is
-the one most likely to be silently wrong while everything reports fine — the user would discover it at a restore, when
-it decides how far back they can reach. If a setting disagrees with what was asked, or cannot be read back at all, say
-that instead of confirming; an unconfirmable setting is not a saved one.
+**Do not report success from the creation call's own answer** — it says the call was accepted, which is not the same as
+the plan carrying what was asked. The settings that decide what "backed up" MEANS are retention, compression and any
+exclusions, and retention is the one most likely to be silently wrong while everything reports fine; the user would
+discover it at a restore, when it decides how far back they can reach.
+
+**And measured, so you do not spend the attempt: this surface cannot read those back per plan.** The plan listing returns
+name, type, id and last result — no settings. **The trap is that a retention tool DOES exist and is machine-wide, not
+this plan's**: comparing it against what the user asked for THIS plan and finding agreement would confirm nothing, while
+reading exactly like a verification. A false "verified" is worse than an admitted gap, because it ends the only enquiry
+that would have found the problem.
+
+So say what you asked for, name retention explicitly as the setting that cannot be confirmed from here, and do not imply
+it was checked. If a later tool does return a plan's own settings, then compare and report disagreement — until then the
+honest report is the request plus the limit.
 
 **The SCHEDULE is the one thing you cannot read back THROUGH THIS SURFACE, and that changes what you may say about it.**
 The scope is deliberate: the recurrence is not unknowable, it is unreachable from here, and stating the stronger claim

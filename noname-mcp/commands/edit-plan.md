@@ -79,11 +79,15 @@ none of the caution a verb that sounds like it acts.
      which is its own defect. The alert RECIPIENT is not in that group and never was: it is machine-wide, so changing
      it reaches every plan — that one is named before it is touched.
 4. **Summarize and confirm** before applying: what changes, from what, to what.
-5. **Apply in place** with the update tool, then read the plan back and COMPARE it with what was asked — not merely
-   check that a read succeeds. Whether the plan carries the retention, compression and exclusions requested is not
-   verifiable from what we send, and retention is the setting most likely to be silently wrong while every call reports
-   success; the user would find out at a restore. If the read disagrees with the request, or the setting cannot be read
-   back, report that rather than success. An unconfirmable change is not an applied one.
+5. **Apply in place** with the update tool — and do not treat its answer as confirmation. Whether the plan carries the
+   retention, compression and exclusions requested is not verifiable from what we send, and retention is the setting most
+   likely to be silently wrong while every call reports success; the user would find out at a restore.
+   **Measured: this surface has no per-plan settings read**, so there is no comparison to make. The plan listing returns
+   name, type, id and last result. **A retention tool exists and is MACHINE-WIDE, not this plan's** — comparing it with
+   what was asked for this plan and finding agreement confirms nothing while reading exactly like a verification, and a
+   false "verified" ends the only enquiry that would have caught the problem.
+   So report the change you made, name retention as the part that cannot be confirmed from here, and never imply it was
+   read back. An unconfirmable change is not an applied one — and saying so is the whole value of this step.
 
 **Never describe the plan as fully shown.** What this surface can read back is not everything a plan may carry: a plan
 created outside it can hold a pre- or post-action that runs a command, and nothing here can report that — the only place
