@@ -27,8 +27,8 @@ const programFiles = process.env['ProgramFiles'] || 'C:\\Program Files';
  * short on purpose, and a machine carrying a rebranded build should read as "our agent is absent", which is true.
  */
 export const AGENT_INSTALL_DIRS = [
-  `${programFiles}\\MSP360\\Managed Backup`,
-  `${programFiles}\\CloudBerryLab\\CloudBerry Backup`,
+  join(programFiles, 'MSP360', 'Managed Backup'),
+  join(programFiles, 'CloudBerryLab', 'CloudBerry Backup'),
 ];
 
 /** The CLI executable whose presence in one of those directories proves the product is installed AND drivable. */
@@ -40,7 +40,7 @@ export const AGENT_EXE = 'cbb.exe';
  */
 export function agentInstalled(exists = existsSync) {
   try {
-    return AGENT_INSTALL_DIRS.some(dir => exists(`${dir}\\${AGENT_EXE}`));
+    return AGENT_INSTALL_DIRS.some(dir => exists(join(dir, AGENT_EXE)));
   } catch {
     return false;
   }
