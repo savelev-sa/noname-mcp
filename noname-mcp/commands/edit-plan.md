@@ -87,6 +87,12 @@ created outside it can hold a pre- or post-action that runs a command, and nothi
 those parameter names appear is a refusal to accept them. So summarise what you changed and what you read, and do not
 tell the user "this is your plan" as though the list were complete.
 
+**And here is WHY the read-back is not optional, which makes it stick better than the instruction alone.** The backup
+agent does not reject an argument it does not recognise: it prints its complaint on standard output and **exits zero**.
+So a mistyped or wrong-for-this-verb option produces a successful call, a plan that reports as updated, and a setting
+that never changed. Nothing in the chain has to be broken for this to happen — the call succeeded and told the truth
+about itself. Only a read-back of the plan can tell you whether your edit exists.
+
 ## When an in-place change is not possible
 
 Some changes may not be expressible through an update. Then, in this order:
