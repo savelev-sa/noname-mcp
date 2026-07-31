@@ -93,9 +93,13 @@ Practical rule: gather what the user wants, then establish the plan's format, th
 available together — in that order. Confirming a set of settings the agent will reject wastes the user's decision and
 teaches them that the confirmation was not worth reading.
 
-**Report the protection actually in effect, not merely that a plan was created — and that includes what nobody chose.**
-Three defaults of the **file** backup plan narrow it silently, and each one surfaces at the restore, the single moment a
-user cannot absorb it. Unless the plan was created asking otherwise, say plainly:
+**Report the protection actually in effect, not merely that a plan was created — and RELAY what the creation returns
+rather than composing it.** The plan-creation result now states each protection value and marks its source, *"(you
+asked)"* or *"(agent default)"*. Pass those words through: they distinguish a setting the user chose from one that
+merely happened, and no sentence you compose can add that distinction without risking disagreeing with the tool.
+
+The three narrowings below are why that line exists, and remain what to check it against. They are defaults of the
+**file** backup plan, each surfacing at the restore — the single moment a user cannot absorb it:
 
 - **NTFS permissions are not backed up.** A restore returns the files without their access control.
 - **System and hidden files are excluded.** This one inverts the usual reading — the default here is to EXCLUDE, so
