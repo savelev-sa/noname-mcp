@@ -41,10 +41,19 @@ stops working. Never phrase that as "are you sure?".
 
 **Say what CLASS of thing dies, because the two are easy to confuse.** What this removes is the destination's
 configuration and its stored credentials ON THIS MACHINE, and with them the ability to list or restore from it here.
-Whether anything at the destination itself is deleted is **not established by anything we have measured** — so do not
-claim it is safe and do not claim it is destroyed. Say plainly that you cannot tell them, and that if it matters they
-should check in the storage provider before agreeing. A user who thinks they are tidying a list, or who thinks their
-cloud copies are being erased, is being misled in opposite directions by the same silence.
+
+**For a LOCAL (filesystem) destination this is now measured, and the answer is reassuring — say it.** Removing the
+account does **not** delete the data at the destination: a folder inspected directly before and after the removal held
+the same files, the same byte count and the same hashes. And re-adding the same folder brings the restore points back —
+the agent lists the stored tree again, so what was there is not merely present but usable. For a local destination the
+honest confirmation is three facts: the configuration and local access go, the data does not, and re-adding restores
+visibility.
+
+**For a CLOUD destination it is still not established, and the local result must not be stretched over it.** The
+measurement was a filesystem folder; a provider path could differ and nobody has run it. So for Wasabi, Backblaze, S3
+or any remote store: do not claim it is safe and do not claim it is destroyed. Say plainly that you cannot tell them,
+and that if it matters they should check with the storage provider before agreeing. A user who thinks they are tidying
+a list, or who thinks their cloud copies are being erased, is being misled in opposite directions by the same silence.
 
 Never quote a credential back — not in the confirmation, not in a log line, not in an error. A confirmation that names
 what will be lost is exactly where a secret gets echoed by accident. The same applies to anything that REPLACES configuration
