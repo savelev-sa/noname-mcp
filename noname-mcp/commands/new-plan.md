@@ -93,10 +93,16 @@ Practical rule: gather what the user wants, then establish the plan's format, th
 available together — in that order. Confirming a set of settings the agent will reject wastes the user's decision and
 teaches them that the confirmation was not worth reading.
 
-**Report the protection actually in effect, not merely that a plan was created — and RELAY what the creation returns
-rather than composing it.** The plan-creation result now states each protection value and marks its source, *"(you
-asked)"* or *"(agent default)"*. Pass those words through: they distinguish a setting the user chose from one that
-merely happened, and no sentence you compose can add that distinction without risking disagreeing with the tool.
+**Report the protection actually in effect, not merely that a plan was created.** State each value AND where it came
+from — a setting the user chose reads differently from one that merely happened, and that distinction is the whole
+value of saying it at all.
+
+**Compose that from the request you made, and say so.** Measured: the creation result relays the agent's own output plus
+notes on schedule, retention and compression — **it carries no protection summary**, so there is nothing to pass
+through. An earlier version of this file said the result states those values and told you to relay the words; it does
+not, and an instruction to relay an absent line is worse than none, because the likely outcome is silence about
+protection while the call reports success. So mark each value from what you sent: named in the request, or left to the
+agent's default per the list below. Do not present it as read back from the plan — it is not.
 
 The three narrowings below are why that line exists, and remain what to check it against. They are defaults of the
 **file** backup plan, each surfacing at the restore — the single moment a user cannot absorb it:
