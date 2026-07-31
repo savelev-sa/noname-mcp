@@ -35,6 +35,11 @@ address already saved in the settings — so a call meant as a connectivity chec
 which may be a person who did not expect it and cannot tell it from a real alert. There is no way to exercise this
 without sending: treat every form of it as sending, and ask first.
 
+**Compression is a yes/no that is already YES, and there is no codec to choose.** The plan verb takes one compression
+argument whose documented default is on; the algorithm is not exposed at all, so an offer to "pick a compression
+method" promises a choice the agent does not have. Say the plan will be compressed unless the user asks otherwise, and
+if they want a specific algorithm, say plainly that this product does not let you choose one.
+
 **Encryption is not a checkbox in that list — it is a password the user must still have years from now.** The agent's
 restore path takes the encryption password as an input (`-ep`), so the password is required at the moment the data is
 wanted, not only when the plan is made. Nothing in this product's captured command surface recovers, resets or hints a
@@ -123,6 +128,12 @@ and any exclusions. Whether a created plan actually carries them is not verifiab
 the one most likely to be silently wrong while everything reports fine — the user would discover it at a restore, when
 it decides how far back they can reach. If a setting disagrees with what was asked, or cannot be read back at all, say
 that instead of confirming; an unconfirmable setting is not a saved one.
+
+**Read the SCHEDULE back in the same breath, and compare the FREQUENCY rather than the number.** A plan asked to repeat
+every two days has been recorded as running monthly — not a wrong interval but a wrong KIND of interval, thirty times
+rarer, on the one thing a backup plan exists to do. Nothing about that looks wrong in a plan list, and the user finds
+out when they need a copy that was never taken. So state the cadence back in words the user can check — *"this will run
+once a month"* — never as the value that was sent.
 
 After that, confirm the plan was saved. If the backup tools aren't available yet (setup not finished), don't expose internals — just tell the user a quick one-time setup is needed and run `/setup` first.
 
