@@ -38,7 +38,7 @@ status and can take seconds, which says nothing about whether forwarding will wo
 
 ## Commands and skill
 
-`/setup`, `/destinations`, `/new-plan`, `/edit-plan`, `/run`, `/status`, `/restore`, `/report`, `/license` — described in the
+`/setup`, `/destinations`, `/new-plan`, `/edit-plan`, `/run`, `/status`, `/restore`, `/report` — described in the
 [repo README](../README.md#commands). They orchestrate the server's MCP tools; they define none of their own.
 
 The `onboarding` skill covers the same ground as `/setup` for free-form requests ("backups aren't working"), and

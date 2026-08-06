@@ -1,7 +1,7 @@
 # noname-mcp
 
 Manage Windows backups from Claude Code: create and schedule backup plans, run them on demand, check plan health,
-restore files, manage storage destinations and licenses — by talking to a backup agent installed on the same
+restore files and manage storage destinations — by talking to a backup agent installed on the same
 machine. Windows only. Apache-2.0.
 
 The repo is both the plugin and its marketplace: `.claude-plugin/marketplace.json` lists one plugin, `noname-mcp/`.
@@ -60,7 +60,6 @@ no Claude Code restart (a restart is only the fallback if they fail to show).
 | `/status` | last session result and recent failures, per plan or across all plans |
 | `/restore` | guided restore: browse restore points, pick a version, restore, verify |
 | `/report` | backed-up volume per plan or session, occupied space per destination |
-| `/license` | assign a license, report active license types and counts |
 
 The commands orchestrate the MCP tools the local server exposes; they do not define tools of their own.
 

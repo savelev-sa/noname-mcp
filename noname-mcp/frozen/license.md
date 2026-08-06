@@ -3,6 +3,20 @@ name: license
 description: Assign a license and report active license types and counts.
 ---
 
+> **NOT SHIPPED — frozen for the MVP, and this directory is the whole mechanism.** A command is advertised by living in
+> `commands/`; moving it out unships it while keeping every reviewed line. **Restore = move this file back**, one
+> operation, nothing to reconstruct.
+>
+> **Why:** its entire tool family — `get_license_info`, `activate_license`, `release_license` — is in the frozen set, so
+> the command advertised a capability the dispatcher refuses. That is worse than absence: an instruction that reads as
+> working and fails one layer down teaches a user that the surface lies. The truthful FROZEN refusal below the tool
+> boundary is unchanged; what was removed is the advertisement.
+>
+> **Kept rather than deleted on purpose.** The two reporting clauses here were measured, not styled: the state is
+> reported as UNKNOWN because local licence state carries no expiry date, and a licence problem never discourages a
+> restore because the vendor's own plan-type table does not gate restore. Those survive the freeze and must come back
+> with the command — re-deriving them would mean re-measuring them.
+
 # /license - license management
 
 Help the user with licensing. The license tools are not in the promoted set - find and call them via the meta-tools (`search_tools` -> `execute_tool`).
