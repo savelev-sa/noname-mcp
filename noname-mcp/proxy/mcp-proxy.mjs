@@ -22,8 +22,9 @@
  *                             Default = the public release asset baked in below (INSTALLER_URL_DEFAULT),
  *                             so the shipped default is a real hosted URL, never localhost. For dev/e2e,
  *                             override with the local landing page (http://localhost:8088/).
- *   NONAME_MCP_COMPAT_MAJOR   compatible server MAJOR version (semver MAJOR must match; minor/patch
- *                             drift is tolerated, per the proxy<->server contract).
+ *   NONAME_MCP_COMPAT_MAJOR   MINIMUM supported server MAJOR (default 0). A FLOOR, not an exact match: an older
+ *                             major is reported as too old, a newer one is noted and forwarded to anyway. It
+ *                             refuses nothing either way - see checkVersion, which warns and returns.
  *   NONAME_MCP_PRODUCT_NAME   how the backup product is NAMED to the user in messages (default: a generic
  *                             phrase — deployments set the real product name).
  */
@@ -47,7 +48,9 @@ const SERVER_INSTALLER_URL = process.env.NONAME_MCP_INSTALLER_URL || INSTALLER_U
 // say "ask your administrator" instead of offering to install.
 const INSTALLER_URL_CONFIGURED = /^https?:\/\/\S+/.test(SERVER_INSTALLER_URL);
 // Proxy<->server compat: require the server MAJOR to equal this; minor/patch drift is OK (warn only).
-const COMPAT_MAJOR = parseInt(process.env.NONAME_MCP_COMPAT_MAJOR || '1', 10);
+// MINIMUM supported server major, not an exact one. Default 0 because the shipped server is 0.x; a 1.x server is
+// forwarded to without complaint rather than being called "too new".
+const COMPAT_MIN_MAJOR = parseInt(process.env.NONAME_MCP_COMPAT_MAJOR || '0', 10);
 
 // Tell the server which server MAJOR this proxy can drive, by adding it to the initialize handshake. The server
 // keeps the last handshaked value so a self-update can REFUSE a cross-MAJOR candidate instead of installing it
@@ -61,8 +64,10 @@ const COMPAT_MAJOR = parseInt(process.env.NONAME_MCP_COMPAT_MAJOR || '1', 10);
 // future SDK that does preserve it needs no change here.
 const withCompatMajor = (params) => ({
   ...(params || {}),
-  _meta: { ...(params?._meta || {}), compatMajor: COMPAT_MAJOR },
-  clientInfo: { ...(params?.clientInfo || {}), compatMajor: COMPAT_MAJOR },
+  // The wire field keeps its name so the server side reads what it always read; its VALUE is now the minimum
+  // supported major rather than an exact one, and the server maintainers were told so rather than left to infer it.
+  _meta: { ...(params?._meta || {}), compatMajor: COMPAT_MIN_MAJOR },
+  clientInfo: { ...(params?.clientInfo || {}), compatMajor: COMPAT_MIN_MAJOR },
 });
 
 const HEALTH_TIMEOUT_MS = 8000;
@@ -80,17 +85,26 @@ let serverVersion = null;
 let lastInitParams = null;   // host's initialize params, replayed to the server on mid-session promotion
 let promoting = false;       // re-entrancy guard for tryPromote
 
-// --- semver major check (MAJOR must match; minor/patch drift tolerated, per the proxy<->server contract) ---
+// --- semver major check (a FLOOR: at or above the minimum; minor/patch drift always tolerated) ---
 function majorOf(v) {
   const m = /^(\d+)\./.exec(String(v || '').trim());
   return m ? +m[1] : null;
 }
-// Returns 'ok' | 'server-too-old' | 'server-too-new' | 'unknown'
+// Returns 'ok' | 'server-too-old' | 'server-newer' | 'unknown'
+//
+// A FLOOR, not an exact match. It used to be an exact match, and that produced a measured user-facing defect: the
+// published plugin demanded major 1, the published server declared 0.2.0, and the user was told to "update the MCP
+// server" to a version that DOES NOT EXIST. Setting the exact value to 0 would have fixed that day and created the
+// mirror defect on the day the server reaches 1.0.0 - "update the plugin" while the plugin is already current.
+//
+// A newer major is reported but NOT treated as an error. This check refuses nothing (see checkVersion - it warns and
+// returns), so its entire product is a sentence a human reads. A sentence that instructs an action the reader cannot
+// take is worse than silence, because it sends them looking for a release that may not exist.
 function compat(versionStr) {
   const maj = majorOf(versionStr);
   if (maj == null) return 'unknown';
-  if (maj < COMPAT_MAJOR) return 'server-too-old';
-  if (maj > COMPAT_MAJOR) return 'server-too-new';
+  if (maj < COMPAT_MIN_MAJOR) return 'server-too-old';
+  if (maj > COMPAT_MIN_MAJOR) return 'server-newer';
   return 'ok';
 }
 
@@ -288,10 +302,12 @@ function checkVersion(jsonText) {
     serverVersion = v;
     const verdict = compat(v);
     if (verdict === 'ok') return;
+    // Neither branch instructs an action the reader may be unable to take. "Update the plugin" was such an
+    // instruction: it fires when the server is ahead, which is exactly when a newer plugin might not exist yet.
     const hint = verdict === 'server-too-old'
-      ? `The installed MCP server (v${v}) is older than this plugin supports (major ${COMPAT_MAJOR}). Update the MCP server.`
-      : verdict === 'server-too-new'
-      ? `The installed MCP server (v${v}) is newer than this plugin supports (major ${COMPAT_MAJOR}). Update the plugin (marketplace).`
+      ? `The installed MCP server (v${v}) is older than this plugin supports (major ${COMPAT_MIN_MAJOR} or later). If an update is available, updating the MCP server is the fix.`
+      : verdict === 'server-newer'
+      ? `The installed MCP server (v${v}) has a newer major version than this plugin was built against (major ${COMPAT_MIN_MAJOR}). Continuing anyway; nothing is known to be wrong. If something misbehaves, check for a plugin update.`
       : `Could not verify the MCP server version (${v}).`;
     log(`VERSION ${verdict}: ${hint}`);
     // Surface to the client as an MCP log notification (best-effort, non-fatal — forwarding continues).

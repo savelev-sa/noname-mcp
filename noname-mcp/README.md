@@ -31,7 +31,7 @@ If either is missing the proxy does not crash: it degrades to onboarding (below)
 | Service appears mid-session (e.g. just installed) | A background poll (every 4s) and a lazy check on each tool call promote the proxy to forward mode: it performs its own `initialize`, then emits `notifications/tools/list_changed` so the host reloads the real tool list **in the same session**. A Claude Code restart is only the documented fallback. |
 | Service disappears mid-session | Forwarding retries (3 attempts, 1.5s apart) on connection errors, then degrades back to onboarding instead of failing hard. |
 | The host shuts the proxy down | The session is RELEASED immediately — `DELETE` on the MCP path carrying the session id the server issued — instead of being left for the server's inactivity timeout. Bounded by an 800ms budget so shutdown is never delayed, skipped entirely when there is no session, and logged when it could not be delivered. A killed process cannot say anything, so the server's timeout stays the backstop for that case. |
-| Version mismatch | The proxy still forwards, but warns which side to update: the server's MAJOR must equal `NONAME_MCP_COMPAT_MAJOR`; minor/patch drift is tolerated. |
+| Version mismatch | The proxy **still forwards** — this check refuses nothing. Below `NONAME_MCP_COMPAT_MAJOR` it says the server looks too old; above it, it says so and carries on without claiming anything is wrong. |
 
 Liveness for promotion is the `/mcp` `initialize` call, deliberately **not** `/health` — health aggregates agent
 status and can take seconds, which says nothing about whether forwarding will work.
@@ -83,7 +83,7 @@ noname-mcp/
 |---|---|---|
 | `NONAME_MCP_URL` | `http://localhost:19360/mcp` | installed MCP-server service endpoint |
 | `NONAME_MCP_INSTALLER_URL` | baked-in constant (`INSTALLER_URL_DEFAULT` in the proxy = this repo's `releases/latest/download/Noname-MCP-Setup.exe`) | OVERRIDE for non-standard setups only — users need NO env var: a real hosted URL ships baked into the plugin. Dev/test machines serving the exe from a local landing page set this |
-| `NONAME_MCP_COMPAT_MAJOR` | `1` | compatible server MAJOR (semver major must match; minor/patch drift tolerated) |
+| `NONAME_MCP_COMPAT_MAJOR` | `0` | MINIMUM supported server MAJOR. A floor, not an exact match: older is reported as too old, newer is noted and forwarded to anyway |
 | `NONAME_MCP_PRODUCT_NAME` | `your backup software` | how the backup product is NAMED to the user in onboarding messages; the source carries no product branding, so set this to the real name |
 
 The onboarding status reports `installer_url_configured: false` when the effective value is not a URL — that is
