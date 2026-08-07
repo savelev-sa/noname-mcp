@@ -227,21 +227,7 @@ async function handleAbsent(msg) {
   }
   if (method === 'tools/call') {
     // Lazy re-probe: the server may have just been installed — promote before answering.
-    if (await tryPromote()) {
-      const status = { server_installed: true, endpoint: MCP_URL, installer_url: SERVER_INSTALLER_URL,
-                       installer_url_configured: INSTALLER_URL_CONFIGURED, agent_installed: agentInstalled(),
-                       next_action: 'reload_tools',
-                       assistant_note: 'Tell the user in plain language that setup finished and they can ' +
-                         'continue with their backup task. Do NOT mention endpoints, proxy, tool lists or ' +
-                         'restarts unless the tools fail to appear.' };
-      const text =
-        `Setup is finished — you can go ahead with your backup task now.`;
-      return out({ jsonrpc: '2.0', id, result: {
-        content: [{ type: 'text', text }],
-        structuredContent: status,
-        isError: false,
-      }});
-    }
+    if (await tryPromote()) return out(setupFinishedResult(id));
     const { status, text } = setupStatus();
     return out({ jsonrpc: '2.0', id, result: {
       content: [{ type: 'text', text }],
@@ -253,8 +239,43 @@ async function handleAbsent(msg) {
   return out({ jsonrpc: '2.0', id, error: { code: -32601, message: setupStatus().text } });
 }
 
+// The ONE tool this proxy owns. It is synthesised here, in absent mode, and has NEVER existed on the server.
+//
+// So a call to it is a call to THE PROXY, in any mode — and forwarding it was the defect, not a missing special case.
+// Framing it as "a guard against a race" undersells it: the proxy was forwarding a name it invented, to a server that
+// by definition does not implement it, which returns a hard `-32602 Unknown tool` naming a tool this proxy advertised.
+//
+// REPRODUCED, not inferred (measured against the published proxy and a real server, no mocks): list while
+// absent -> one tool; the server appears mid-session; call that tool -> `-32602`. The protocol side is already
+// correct — promotion emits `notifications/tools/list_changed` — but the remedy is ASYNCHRONOUS, and a client holding
+// a list it was legitimately given can call before it reloads. Announcing cannot close a window; answering can.
+//
+// This does not accumulate into a pile of special cases, because the proxy owns exactly one tool. If it ever owns a
+// second, this becomes a set membership test and stays one line.
+const PROXY_OWNED_TOOL = 'noname_setup';
+
+// One response, one definition. The promotion path in absent mode and the guard below must not be able to drift.
+const setupFinishedResult = (id) => ({
+  jsonrpc: '2.0', id, result: {
+    content: [{ type: 'text', text: 'Setup is finished — you can go ahead with your backup task now.' }],
+    structuredContent: {
+      server_installed: true, endpoint: MCP_URL, installer_url: SERVER_INSTALLER_URL,
+      installer_url_configured: INSTALLER_URL_CONFIGURED, agent_installed: agentInstalled(),
+      next_action: 'reload_tools',
+      assistant_note: 'Tell the user in plain language that setup finished and they can continue with their ' +
+        'backup task. Do NOT mention endpoints, proxy, tool lists or restarts unless the tools fail to appear.',
+    },
+    isError: false,
+  },
+});
+
 // --- forward a message to the HTTP service ---
 async function handleForward(msg) {
+  // Answer for ourselves before forwarding: see PROXY_OWNED_TOOL above.
+  if (msg.method === 'tools/call' && msg.params?.name === PROXY_OWNED_TOOL) {
+    log(`answered ${PROXY_OWNED_TOOL} locally in forward mode (stale tool list from absent mode)`);
+    return out(setupFinishedResult(msg.id));
+  }
   // The host's initialize is forwarded as-is EXCEPT for the compat field we add — this is the handshake the
   // server actually sees in normal operation (the promotion handshake only happens after an absent spell).
   // `msg` itself stays untouched: the degrade path below replays the host's original message.
