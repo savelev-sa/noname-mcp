@@ -33,6 +33,31 @@ If you have more than one marketplace configured, name it explicitly: `claude pl
 directory instead of the repo name. Inside a session the equivalent route is
 `/plugin marketplace add savelev-sa/noname-mcp`, then install `noname-mcp` from the `/plugin` menu.
 
+## Updating — and how to check it actually happened
+
+```bash
+claude plugin marketplace update noname-mcp     # refresh the catalogue
+claude plugin update noname-mcp@noname-mcp      # update the INSTALLED copy
+```
+
+**Both commands, in that order, and the second one is the one that matters.** They touch different things: the first
+refreshes a clone of this repository, the second replaces the copy your sessions actually load. Updating only the first
+leaves you running the old plugin while everything reports success — measured, not hypothetical.
+
+**How to tell it worked:** the version. Run `claude plugin list` and compare against the `version` in this repository's
+`noname-mcp/.claude-plugin/plugin.json`. If they differ after an update, the update did not land.
+
+**If it says you are already up to date and the version still differs**, reinstall — it is quick and it is certain:
+
+```bash
+claude plugin uninstall noname-mcp@noname-mcp
+claude plugin install   noname-mcp@noname-mcp
+```
+
+*(A note on numbers, because two live near each other: the plugin's own version is the one in `plugin.json`. This
+repository also publishes RELEASES whose tags track the separate MCP-server installer they carry. They are different
+things and are not expected to match.)*
+
 ## First run
 
 Run `/setup`. It reports one of three states and acts on it:
