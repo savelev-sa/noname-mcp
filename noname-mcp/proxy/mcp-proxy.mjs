@@ -109,12 +109,8 @@ function compat(versionStr) {
 }
 
 // --- probe the installed service ---
-// Liveness is `/mcp initialize`, NOT `/health` — the same choice tryPromote already made and for the same reason,
+// Liveness is asked of `/mcp`, NOT `/health` — the same choice tryPromote already made and for the same reason,
 // which this probe should have shared from the start.
-//
-// MEASURED against a real installed server, three runs each:
-//     /health           3100 / 3168 / 3073 ms
-//     /mcp initialize     10 /    8 /    3 ms
 //
 // The old probe aborted at 2500 ms, so it declared a healthy server ABSENT every single time — deterministic, not
 // flaky. The user then got the one-tool absent surface and a real question answered with "setup is finished".
