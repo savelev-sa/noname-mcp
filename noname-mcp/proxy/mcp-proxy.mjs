@@ -109,15 +109,44 @@ function compat(versionStr) {
 }
 
 // --- probe the installed service ---
+// Liveness is `/mcp initialize`, NOT `/health` — the same choice tryPromote already made and for the same reason,
+// which this probe should have shared from the start.
+//
+// MEASURED against a real installed server, three runs each:
+//     /health           3100 / 3168 / 3073 ms
+//     /mcp initialize     10 /    8 /    3 ms
+//
+// The old probe aborted at 2500 ms, so it declared a healthy server ABSENT every single time — deterministic, not
+// flaky. The user then got the one-tool absent surface and a real question answered with "setup is finished".
+//
+// **`/health` is slow BECAUSE the product is installed**: it aggregates backup and RM service state. So the failure
+// landed exactly on the machines where everything works, and a bare machine — where /health is fast — looked fine.
+// That is why the repair is the ENDPOINT and not a bigger number: raising 2500 would be guessing against a latency
+// that belongs to how much the agent has to report, which is not a property this proxy controls.
+// The question is only "is anything listening", so ANY HTTP response answers it — including a refusal. A session-free
+// `ping` gets a fast JSON-RPC error and that error IS the proof of life; a dead endpoint throws on connect instead.
+//
+// It deliberately does NOT send `initialize`. An initialize would put a second client identity on the wire, and the
+// host's own identity must be the only one the server ever sees — a contract test caught exactly that when this probe
+// first used one, which is the reason this shape exists rather than the obvious one.
+//
+// MEASURED against a real installed server, three runs each:
+//     /health              3100 / 3168 / 3073 ms   <- the old probe, aborting at 2500
+//     ping, no session       63 /    5 /    3 ms
+//     dead endpoint           3 ms, throws         <- up and down are unambiguous
 async function probeServer() {
   const start = Date.now();
-  const healthUrl = MCP_URL.replace(/\/mcp$/, '/health');
-  log(`probing service at ${healthUrl} ...`);
+  log(`probing service at ${MCP_URL} ...`);
   while (Date.now() - start < HEALTH_TIMEOUT_MS) {
     try {
-      const res = await fetch(healthUrl, { signal: AbortSignal.timeout(2500) });
-      if (res.ok) { await res.text(); log(`service ready (${Date.now() - start}ms)`); return true; }
-    } catch { /* not up yet */ }
+      // Any answer at all means the service is up. The response BODY is irrelevant and is not parsed.
+      await fetch(MCP_URL, { method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json, text/event-stream' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: 'mcp-proxy-probe', method: 'ping' }),
+        signal: AbortSignal.timeout(3000) });
+      log(`service ready (${Date.now() - start}ms)`);
+      return true;
+    } catch { /* not up yet: connection refused, or slower than the per-attempt ceiling */ }
     await new Promise(r => setTimeout(r, HEALTH_RETRY_MS));
   }
   return false;
