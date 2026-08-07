@@ -1,5 +1,5 @@
 ---
-name: Recovering Data
+name: recovering-data
 description: Use when the user has already lost something - "I deleted it", "I need yesterday's version", "the disk died", "can we get this file back". Covers finding restore points, browsing what exists, choosing a restore route, and stating overwrite consequences before acting.
 version: 0.1.0
 ---

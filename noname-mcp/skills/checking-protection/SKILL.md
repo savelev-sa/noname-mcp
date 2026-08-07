@@ -1,5 +1,5 @@
 ---
-name: Checking Protection
+name: checking-protection
 description: Use when the user asks whether backups are working or whether they are protected - "did last night's backup run", "are we covered", "show me recent failures", "is anything running now". Covers plan shape, run outcomes, corroborating a status word against the log, and volume.
 version: 0.1.0
 ---

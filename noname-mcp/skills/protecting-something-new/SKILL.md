@@ -1,5 +1,5 @@
 ---
-name: Protecting Something New
+name: protecting-something-new
 description: Use when the user names DATA to protect rather than a plan - "back up the finance share", "we need nightly copies of this folder", "add these files to backups". Covers choosing or adding a storage destination, testing it, creating the plan, and reporting what was actually created.
 version: 0.1.0
 ---

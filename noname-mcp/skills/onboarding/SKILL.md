@@ -1,5 +1,5 @@
 ---
-name: Backup Onboarding and Health Check
+name: onboarding
 description: Use whenever someone wonders whether backup is set up on this machine at all, or when backup tools are missing or failing - "I just got this machine, is the backup thing even set up here", "is backup working on this box", "the backup tools aren't loading", "nothing backup-related shows up", first-time setup, or a machine that used to work and stopped. Carries the rules that go with it - never install the backup agent silently, never shell-probe for it, and how to read the setup status without mistaking a leftover data folder for an installed agent.
 version: 0.2.0
 ---

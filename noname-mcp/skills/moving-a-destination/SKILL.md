@@ -1,5 +1,5 @@
 ---
-name: Moving a Destination
+name: moving-a-destination
 description: Use when the user wants to change where backups go or rotate storage credentials - "point backups at the new bucket", "rotate the keys", "move this plan to different storage", "remove this storage account". Covers finding what is bound to an account, the fold-back nobody expects, and testing afterwards.
 version: 0.1.0
 ---

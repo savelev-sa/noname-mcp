@@ -1,5 +1,5 @@
 ---
-name: Failure Alerts
+name: failure-alerts
 description: Use when the user asks about backup notifications - "email me if a backup fails", "who gets notified", "turn on success emails", "stop these alerts". Covers the machine-wide recipient, the per-plan trigger, and what testing the mail path does and does not prove.
 version: 0.1.0
 ---
