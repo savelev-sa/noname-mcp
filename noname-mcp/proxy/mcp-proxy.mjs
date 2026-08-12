@@ -339,6 +339,12 @@ async function publishedChecksum(installerUrl) {
 
 // Silent-install switches, taken from the shipped onboarding guidance rather than invented here. Passed as an ARGUMENT
 // ARRAY to execFile — never a shell string — so nothing in a path or URL can be read as a command.
+//
+// WHAT THESE DO NOT SILENCE, because the names invite the opposite reading: they suppress the INSTALLER'S OWN dialogs
+// and nothing else. The Windows elevation prompt still appears, and that is deliberate — it is the one gate in this
+// flow that is not ours, and working around, suppressing or pre-empting it is forbidden rather than merely unwise.
+// A flow that removed it would be asking the user for permission while quietly holding the only permission that counts.
+// This is why the consent wording warns about that prompt BEFORE it appears instead of trying to avoid it.
 const INSTALL_ARGS = ['/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART'];
 
 async function runGuidedInstall() {

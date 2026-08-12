@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- **`/setup` and the `onboarding` skill** - both now route the install through `noname_install_server` instead of
+  describing shell steps. The tool shipped in 0.6.0 and **nothing pointed at it**: the instructions still told the
+  model to download and run the installer itself, so the default path stayed the improvised one the tool replaced -
+  and that path cannot verify a checksum, so it runs an elevated installer on the strength of a URL. A capability no
+  instruction names is not a capability.
+- **Failure wording** - both now relay the STATE the machine is left in, not only what went wrong. A non-zero
+  installer exit says it may be PARTLY installed, because "setup failed" implies the opposite and nobody hunts for a
+  half-installed service they believe never existed. A checksum mismatch is never retried: corruption and
+  substitution are indistinguishable from here.
+- **Success wording** - a finished install may say setup is done and the tools are available; it may NOT say backups
+  are working, protected or ready. Installing the service is not having an agent, a destination or a plan.
+- **The silent switches suppress the INSTALLER's dialogs, not the Windows approval prompt** - now stated in the
+  proxy, the skill and the command, because the switch names invite the opposite reading. That prompt is the one
+  gate in this flow that is not ours.
+
 - **`protecting-something-new`** - proposes a plan NAME from the user's own words for the data and asks through the
   client's question interface before creating anything. Uniqueness is a hard requirement, not tidiness: the plan-reading
   tool refuses a name that several plans share, so a duplicate removes the by-name route to that plan for every later
