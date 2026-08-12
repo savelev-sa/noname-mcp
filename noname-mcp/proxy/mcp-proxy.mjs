@@ -287,8 +287,15 @@ const setupFinishedResult = (id) => ({
       server_installed: true, endpoint: MCP_URL, installer_url: SERVER_INSTALLER_URL,
       installer_url_configured: INSTALLER_URL_CONFIGURED, agent_installed: agentInstalled(),
       next_action: 'reload_tools',
+      // The fallback wording is deliberate and was measured on a real machine: "restart" is not an instruction a
+      // user can follow on a client that minimises to the tray. Closing the window HIDES it, the process keeps
+      // running, and nothing reloads - so the user performs the motion, sees no change, and concludes the product
+      // is broken. Say QUIT, and name the tray, because that is the step the close button skips.
       assistant_note: 'Tell the user in plain language that setup finished and they can continue with their ' +
-        'backup task. Do NOT mention endpoints, proxy, tool lists or restarts unless the tools fail to appear.',
+        'backup task. Do NOT mention endpoints, proxy, tool lists or restarts unless the tools fail to appear. ' +
+        'ONLY if they do not appear: ask the user to QUIT the app completely and open it again - closing the ' +
+        'window is not enough on an app that keeps running in the tray or menu bar, so they need to right-click ' +
+        'its tray icon and choose Quit (Выход) first.',
     },
     isError: false,
   },
