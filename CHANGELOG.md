@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **`protecting-something-new`** - proposes a plan NAME from the user's own words for the data and asks through the
+  client's question interface before creating anything. Uniqueness is a hard requirement, not tidiness: the plan-reading
+  tool refuses a name that several plans share, so a duplicate removes the by-name route to that plan for every later
+  read. A collision is resolved with the user's words, never by appending a number. If they decline, the plan is still
+  created with the proposal and the result says what it was called - a name is never applied SILENTLY, which is not the
+  same as never applied.
+
 - **`noname_install_server`** (new) - the one-time setup as a TOOL in the proxy, so it works on a client with no shell.
   Requires explicit consent, reads the checksum published with the release, and compares it **before** executing.
   Refuses - never skips - when no checksum can be read, because a check that finds no hash looks exactly like a check
