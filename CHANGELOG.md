@@ -17,6 +17,11 @@
   proxy, the skill and the command, because the switch names invite the opposite reading. That prompt is the one
   gate in this flow that is not ours.
 
+- **`/setup` manual fallback** - said the user could double-click "the same downloaded installer". After the
+  routing change there is no such file: the tool downloads to a temporary path and removes it whether the run
+  succeeded or failed, so that a verified installer does not sit on disk waiting to be run later by something that
+  will not re-check it. The fallback now says to download it from the location the status names.
+
 - **`protecting-something-new`** - proposes a plan NAME from the user's own words for the data and asks through the
   client's question interface before creating anything. Uniqueness is a hard requirement, not tidiness: the plan-reading
   tool refuses a name that several plans share, so a duplicate removes the by-name route to that plan for every later
