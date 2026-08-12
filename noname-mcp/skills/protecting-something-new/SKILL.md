@@ -1,7 +1,8 @@
 ---
 name: protecting-something-new
 description: Use when the user names DATA to protect rather than a plan - "back up the finance share", "we need nightly copies of this folder", "add these files to backups". Covers choosing or adding a storage destination, testing it, creating the plan, and reporting what was actually created.
-version: 0.1.0
+when_to_use: Also when the user expresses RISK rather than a request - worry about losing something that is not protected yet. "there is stuff on this machine I could not afford to lose", "this folder isn't backed up and it should be", "what happens to these files if the disk dies", "I want this covered before something goes wrong". The user is describing exposure, not asking for a plan; the plan is the answer to it.
+version: 0.2.0
 ---
 
 # Protecting something new
