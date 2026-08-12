@@ -1,6 +1,16 @@
 # Changelog
 
-## Unreleased
+> Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
+> is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
+
+## 0.7.1
+
+- **`/setup` manual fallback** - said the user could double-click "the same downloaded installer". After the
+  routing change there is no such file: the tool downloads to a temporary path and removes it whether the run
+  succeeded or failed, so that a verified installer does not sit on disk waiting to be run later by something that
+  will not re-check it. The fallback now says to download it from the location the status names.
+
+## 0.7.0
 
 - **`/setup` and the `onboarding` skill** - both now route the install through `noname_install_server` instead of
   describing shell steps. The tool shipped in 0.6.0 and **nothing pointed at it**: the instructions still told the
@@ -16,11 +26,9 @@
 - **The silent switches suppress the INSTALLER's dialogs, not the Windows approval prompt** - now stated in the
   proxy, the skill and the command, because the switch names invite the opposite reading. That prompt is the one
   gate in this flow that is not ours.
-
-- **`/setup` manual fallback** - said the user could double-click "the same downloaded installer". After the
-  routing change there is no such file: the tool downloads to a temporary path and removes it whether the run
-  succeeded or failed, so that a verified installer does not sit on disk waiting to be run later by something that
-  will not re-check it. The fallback now says to download it from the location the status names.
+- **`protecting-something-new`** - proposes a plan NAME (below). **Written one commit earlier, in a commit that
+  moved no version, so it reached nobody until this release carried it.** Recorded here rather than under its own
+  heading because the version is the delivery mechanism: `plugin update` compares numbers, not commits.
 
 - **`protecting-something-new`** - proposes a plan NAME from the user's own words for the data and asks through the
   client's question interface before creating anything. Uniqueness is a hard requirement, not tidiness: the plan-reading
@@ -29,11 +37,17 @@
   created with the proposal and the result says what it was called - a name is never applied SILENTLY, which is not the
   same as never applied.
 
+## 0.6.0
+
 - **`noname_install_server`** (new) - the one-time setup as a TOOL in the proxy, so it works on a client with no shell.
   Requires explicit consent, reads the checksum published with the release, and compares it **before** executing.
   Refuses - never skips - when no checksum can be read, because a check that finds no hash looks exactly like a check
   that passed. A mismatch deletes the file, does not run it, and is never retried automatically: this surface cannot
   tell a corrupted download from a substituted one.
+
+  **It changed nothing for any user until 0.7.0**, which is the release that pointed the instructions at it.
+
+## 0.5.0
 
 - **`noname_setup`** — when the backup tools do not appear after setup, the guidance now asks for a **full quit and
   reopen**, naming the tray icon, instead of saying "restart". Measured on a real machine: on a client that minimises to
