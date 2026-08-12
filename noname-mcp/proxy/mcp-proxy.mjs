@@ -248,7 +248,44 @@ async function handleAbsent(msg) {
         'Returns a plain-language message to relay plus structured details (act on next_action; the ' +
         'assistant_note says how to word it — keep endpoints/URLs/JSON out of the default narration).',
       inputSchema: { type: 'object', properties: {} },
+    }, {
+      name: INSTALL_TOOL,
+      description: 'Perform the one-time setup: download the backup service installer, verify it against the ' +
+        'checksum published with the release, and run it. REQUIRES the user to have agreed first - pass confirmed ' +
+        'only after they said yes, and tell them Windows will ask them to approve it. Refuses rather than guessing ' +
+        'if no published checksum can be read, or if the download does not match it.',
+      inputSchema: {
+        type: 'object',
+        properties: { confirmed: { type: 'boolean',
+          description: 'True only if the user has explicitly agreed to install now.' } },
+        required: ['confirmed'],
+      },
     }]}});
+  }
+  if (method === 'tools/call' && msg.params?.name === INSTALL_TOOL) {
+    // Consent is the CALLER's to obtain and this tool's to require. Refusing without it is not ceremony: the next
+    // thing that happens is an elevated installer running on someone's machine.
+    if (msg.params?.arguments?.confirmed !== true)
+      return out({ jsonrpc: '2.0', id, result: {
+        content: [{ type: 'text', text: 'Ask the user first, then call this again once they agree. Use words like: ' +
+          "\"Setting this up needs a one-time install on this computer. I can download it and run it now - it " +
+          "takes about a minute, and Windows will ask you to approve it. Go ahead?\" " +
+          'It names BOTH verbs on purpose - consent to a download is not consent to running it - and it warns about ' +
+          'the Windows prompt BEFORE it appears. If they decline, do NOT ask again: tell them they can run the ' +
+          'installer by hand later, and leave it there.' }],
+        structuredContent: { installed: false, reason: 'not_confirmed' },
+        isError: false,
+      }});
+    const r = await runGuidedInstall();
+    if (r.ok) { log('guided install finished and the service answered'); return out(setupFinishedResult(id)); }
+    log('guided install did not complete: ' + r.reason);
+    return out({ jsonrpc: '2.0', id, result: {
+      content: [{ type: 'text', text: r.detail }],
+      structuredContent: { installed: false, reason: r.reason, steps_completed: r.steps,
+        assistant_note: 'Tell the user in plain language what stopped, using the message above. Do NOT retry ' +
+          'automatically after a checksum mismatch - that is the one failure where trying again is the wrong move.' },
+      isError: false,
+    }});
   }
   if (method === 'tools/call') {
     // Lazy re-probe: the server may have just been installed — promote before answering.
@@ -262,6 +299,108 @@ async function handleAbsent(msg) {
   }
   if (method === 'ping') return out({ jsonrpc: '2.0', id, result: {} });
   return out({ jsonrpc: '2.0', id, error: { code: -32601, message: setupStatus().text } });
+}
+
+// --- guided install: fetch, VERIFY, then run -------------------------------------------------------------------
+//
+// It lives in the proxy for a mechanical reason: it has to work BEFORE the server exists, and on a client with no
+// shell to run a download in.
+//
+// The ORDER is the whole point. The checksum is compared BEFORE the file is executed, never after — after is not a
+// check, it is a post-mortem on something already run with the user's privileges.
+//
+// WHERE THE CHECKSUM COMES FROM, measured rather than assumed: the release notes carry none (no 64-hex string anywhere
+// in the body), while the API's asset digest field does, and it matches the bytes an anonymous download produces. A
+// tool written against the notes would find nothing — and that is the dangerous outcome, because a check that finds no
+// checksum looks exactly like a check that passed.
+//
+// Which is why "no checksum" REFUSES instead of proceeding, and says which situation it is in.
+function releaseApiFor(installerUrl) {
+  const m = /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/releases\/latest\/download\/(.+)$/.exec(installerUrl);
+  if (!m) return null;
+  return { api: 'https://api.github.com/repos/' + m[1] + '/' + m[2] + '/releases/latest', asset: m[3] };
+}
+
+async function publishedChecksum(installerUrl) {
+  const r = releaseApiFor(installerUrl);
+  if (!r) return { sha256: null, why: 'the installer location is a custom one, so there is no published checksum to compare against' };
+  try {
+    const res = await fetch(r.api, { headers: { Accept: 'application/vnd.github+json' },
+                                     signal: AbortSignal.timeout(15000) });
+    if (!res.ok) return { sha256: null, why: 'the release information could not be read (HTTP ' + res.status + ')' };
+    const j = await res.json();
+    const a = (j.assets || []).find(x => x.name === r.asset);
+    if (!a) return { sha256: null, why: 'the release does not carry the expected file' };
+    const d = /^sha256:([a-f0-9]{64})$/i.exec(a.digest || '');
+    if (!d) return { sha256: null, why: 'the release does not publish a checksum for that file' };
+    return { sha256: d[1].toLowerCase(), why: null };
+  } catch (e) { return { sha256: null, why: 'the release information could not be reached (' + e.name + ')' }; }
+}
+
+// Silent-install switches, taken from the shipped onboarding guidance rather than invented here. Passed as an ARGUMENT
+// ARRAY to execFile — never a shell string — so nothing in a path or URL can be read as a command.
+const INSTALL_ARGS = ['/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART'];
+
+async function runGuidedInstall() {
+  const steps = [];
+  const refuse = (reason, detail) => ({ ok: false, reason, detail, steps });
+
+  if (!INSTALLER_URL_CONFIGURED)
+    return refuse('not_configured', 'No installer location is configured on this computer.');
+
+  // 1 - the published checksum, BEFORE anything is downloaded or run.
+  const { sha256: expected, why } = await publishedChecksum(SERVER_INSTALLER_URL);
+  if (!expected) return refuse('no_checksum', 'Refusing to install without a published checksum to verify against: ' + why + '.');
+  steps.push('read the published checksum');
+
+  // 2 - download to a temp file.
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { writeFile, unlink, readFile } = await import('node:fs/promises');
+  const { createHash } = await import('node:crypto');
+  const target = join(tmpdir(), 'noname-mcp-setup-download.exe');
+  try {
+    const res = await fetch(SERVER_INSTALLER_URL, { redirect: 'follow', signal: AbortSignal.timeout(600000) });
+    if (!res.ok) return refuse('download_failed', 'The installer could not be downloaded (HTTP ' + res.status + '). Nothing was installed and nothing on this computer changed.');
+    await writeFile(target, Buffer.from(await res.arrayBuffer()));
+  } catch (e) { return refuse('download_failed', 'The installer could not be downloaded (' + e.name + '). Nothing was installed and nothing on this computer changed.'); }
+  steps.push('downloaded the installer');
+
+  // 3 - VERIFY, and refuse on mismatch. Nothing has been executed at this point.
+  const actual = createHash('sha256').update(await readFile(target)).digest('hex');
+  if (actual !== expected) {
+    await unlink(target).catch(() => {});
+    log('install REFUSED: checksum mismatch, expected ' + expected.slice(0, 12) + ' got ' + actual.slice(0, 12));
+    return refuse('checksum_mismatch',
+      'The downloaded installer does not match the checksum published with the release, so it was deleted and NOT run. ' +
+      'This is what a corrupted download or a tampered file looks like — do not retry blindly; say what happened.');
+  }
+  steps.push('checksum matched');
+
+  // 4 - run it, silently, as an argument array.
+  const { execFile } = await import('node:child_process');
+  const code = await new Promise((resolve) => {
+    execFile(target, INSTALL_ARGS, { windowsHide: true, timeout: 600000 }, (err) => resolve(err ? (err.code ?? 1) : 0));
+  });
+  await unlink(target).catch(() => {});
+  // Each failure says what happened, WHAT STATE THE MACHINE IS IN, then what to do — in that order. The state is the
+  // part failure text normally omits, and it decides whether the user's next action is right.
+  //
+  // This one is the only failure of the four that can leave the machine CHANGED, and the natural wording — "setup
+  // failed" — implies the opposite. Someone who believes nothing happened will not go looking for a half-installed
+  // service, so the sentence has to say it outright.
+  if (code !== 0) return refuse('installer_failed',
+    'The installer ran but stopped with an error (code ' + code + '). The setup may be PARTLY installed - this is not ' +
+    'a case where nothing happened. Do not simply try again: check Apps & Features for an entry, and remove it there ' +
+    'before a fresh attempt.');
+  steps.push('installer finished');
+
+  // 5 - poll for liveness, the same way the startup probe does.
+  const deadline = Date.now() + 60000;
+  while (Date.now() < deadline) {
+    if (await probeServer()) { steps.push('service answered'); return { ok: true, steps }; }
+  }
+  return refuse('not_healthy', 'The installer finished, so the software IS installed, but the background service is not answering yet. Nothing is broken on the machine - it is installed and not yet working. Try the setup check again in a minute; if it still does not answer, restarting the computer is the usual repair.');
 }
 
 // The ONE tool this proxy owns. It is synthesised here, in absent mode, and has NEVER existed on the server.
@@ -278,11 +417,17 @@ async function handleAbsent(msg) {
 // This does not accumulate into a pile of special cases, because the proxy owns exactly one tool. If it ever owns a
 // second, this becomes a set membership test and stays one line.
 const PROXY_OWNED_TOOL = 'noname_setup';
+// The second tool this proxy owns. Same ownership argument: it runs BEFORE the server exists, so the server can never
+// implement it, so forwarding it would be the same defect PROXY_OWNED_TOOL describes.
+const INSTALL_TOOL = 'noname_install_server';
 
 // One response, one definition. The promotion path in absent mode and the guard below must not be able to drift.
 const setupFinishedResult = (id) => ({
   jsonrpc: '2.0', id, result: {
-    content: [{ type: 'text', text: 'Setup is finished — you can go ahead with your backup task now.' }],
+    content: [{ type: 'text', text: 'Setup is done and the backup tools are available now.' }],
+    // Deliberately NOT "backups are working/protected/ready": installing this service is not having an agent, a
+    // destination or a plan. A completed install is not a protected machine, and saying otherwise here would be the
+    // reassuring sentence a user acts on.
     structuredContent: {
       server_installed: true, endpoint: MCP_URL, installer_url: SERVER_INSTALLER_URL,
       installer_url_configured: INSTALLER_URL_CONFIGURED, agent_installed: agentInstalled(),

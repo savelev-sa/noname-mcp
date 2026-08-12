@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **`noname_install_server`** (new) - the one-time setup as a TOOL in the proxy, so it works on a client with no shell.
+  Requires explicit consent, reads the checksum published with the release, and compares it **before** executing.
+  Refuses - never skips - when no checksum can be read, because a check that finds no hash looks exactly like a check
+  that passed. A mismatch deletes the file, does not run it, and is never retried automatically: this surface cannot
+  tell a corrupted download from a substituted one.
+
 - **`noname_setup`** — when the backup tools do not appear after setup, the guidance now asks for a **full quit and
   reopen**, naming the tray icon, instead of saying "restart". Measured on a real machine: on a client that minimises to
   the tray, closing the window hides it while the process keeps running, so "restart" is a motion the user can perform
