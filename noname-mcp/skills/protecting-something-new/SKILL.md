@@ -2,7 +2,7 @@
 name: protecting-something-new
 description: Use when the user names DATA to protect rather than a plan - "back up the finance share", "we need nightly copies of this folder", "add these files to backups". Covers choosing or adding a storage destination, testing it, creating the plan, and reporting what was actually created.
 when_to_use: Also when the user expresses RISK rather than a request - worry about losing something that is not protected yet. "there is stuff on this machine I could not afford to lose", "this folder isn't backed up and it should be", "what happens to these files if the disk dies", "I want this covered before something goes wrong". The user is describing exposure, not asking for a plan; the plan is the answer to it.
-version: 0.5.0
+version: 0.5.1
 ---
 
 # Protecting something new
@@ -12,6 +12,17 @@ names or JSON.
 
 The user names data. You produce a plan that actually protects it — and the difference between those two is where this
 skill earns its place.
+
+## 0. Is it a kind of plan this surface can create? Answer this FIRST
+
+**Files and folders are the only kind available here today.** A whole disk, a database, a virtual machine belong to
+families that are switched off on this surface. If that is what they described, say so before asking them anything at
+all: it is not available here — neither "the product cannot do it" nor "it failed", since nothing ran.
+
+**This is step 0 and not a note further down, deliberately.** Everything below asks the user for something: a
+destination, a name, a retention they agree to. Discovering the family at the point of creation means all of it was
+collected and then discarded, and a user whose answers evaporate learns that the questions here are provisional — which
+is what makes the next one, the one that matters, get answered carelessly.
 
 ## 1. Destination first, and TEST it before any plan exists
 
@@ -57,10 +68,7 @@ name as chosen when nothing was chosen — say which of the two happened.
 
 ## 3. Create the plan — and spell sources with FORWARD slashes
 
-`create_file_backup_plan`. **Files and folders are the only kind of plan available here today** — a whole disk, a
-database, a virtual machine belong to families that are switched off on this surface. If that is what they described,
-say so **before** asking them anything else: it is not available here, which is neither "the product cannot do it" nor
-"it failed". Asking for their sources and schedule first and refusing afterwards spends their attention on nothing.
+`create_file_backup_plan` — the only creating verb here, which step 0 already established.
 
 > **Measured, and it is the single most expensive spelling in this product: a source given with BACKSLASHES produces a
 > plan with NO SOURCE AT ALL, and the call reports success.**

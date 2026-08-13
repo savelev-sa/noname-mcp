@@ -3,6 +3,13 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.8.4
+
+- **`protecting-something-new`** - the frozen-family check is **step 0**, not a note inside the creation step. Shipped
+  one version earlier in the right words and the wrong place: it said "say this before asking anything else" while
+  sitting after the two steps that ask. Every step below it asks the user for something, so discovering the family at
+  creation time means all of it was collected and then discarded.
+
 ## 0.8.3
 
 - **`/new-plan`, `protecting-something-new`** - only FILE backup plans can be created on this surface today; the
