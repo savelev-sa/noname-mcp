@@ -3,6 +3,14 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.7.2
+
+- **`protecting-something-new`** - the plan list is read BEFORE anything is asked, and for two things rather than
+  one: whether the data is already protected, and whether the proposed name is free. The naming question used to
+  come first, so a folder an existing plan already covers could be asked about and the answer then discarded. **A
+  question whose answer gets thrown away is worse than no question** - the user made a decision and watched it
+  evaporate, which teaches them that being asked here means nothing.
+
 ## 0.7.1
 
 - **`/setup` manual fallback** - said the user could double-click "the same downloaded installer". After the

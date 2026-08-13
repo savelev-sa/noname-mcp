@@ -2,7 +2,7 @@
 name: protecting-something-new
 description: Use when the user names DATA to protect rather than a plan - "back up the finance share", "we need nightly copies of this folder", "add these files to backups". Covers choosing or adding a storage destination, testing it, creating the plan, and reporting what was actually created.
 when_to_use: Also when the user expresses RISK rather than a request - worry about losing something that is not protected yet. "there is stuff on this machine I could not afford to lose", "this folder isn't backed up and it should be", "what happens to these files if the disk dies", "I want this covered before something goes wrong". The user is describing exposure, not asking for a plan; the plan is the answer to it.
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Protecting something new
@@ -30,7 +30,14 @@ Never from a path spelling — this product has an open defect about which slash
 is wrong on the other machine. Never a timestamp or a counter: those answer *when it was made*, which is the one question
 nobody asks of a name. Never the hostname; the plan already knows where it lives.
 
-**Check the proposal against the existing plan names BEFORE you offer it** (`list_plans`). Uniqueness is not tidiness
+**Read `list_plans` BEFORE you ask anything, and read it for TWO things.**
+
+**First: is this data already protected?** If an existing plan already covers it, say so and stop — do not create a
+second one, and **do not ask for a name you are not going to use.** A question whose answer gets discarded is worse
+than no question: the user has now made a decision, and watching it evaporate teaches them that being asked here means
+nothing.
+
+**Second: is the proposed name free?** Uniqueness is not tidiness
 here: the plan-reading tool resolves a name to an ID and **refuses when several plans share one**, listing the matches
 instead of choosing. So a duplicate name **removes the by-name route to that plan for every later read** — including the
 read-back that verifies what a plan actually carries. If the proposal collides, resolve it **with the user's own words**,
