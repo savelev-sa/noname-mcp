@@ -3,6 +3,17 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.9.0
+
+- **The proxy no longer re-announces a tool list the client already has.** Measured on a real machine: an install
+  stops and starts the service, each failed forward degrades the proxy to onboarding mode, and the 4-second re-probe
+  promotes it straight back - so `notifications/tools/list_changed` fired repeatedly during exactly the operation the
+  user was consenting to. Every call came back `tool permission not granted`, and the session named its own symptom:
+  *"the connection is dropping out from under the permission grant before it can take effect"*. **No install ever
+  completed through a session, while the same tool installed when driven directly.** A promotion after a blip
+  advertises the SAME list, so the notification bought nothing and cost the client its state. The announcement now
+  keys on what the client last RECEIVED, not on which mode the proxy is in.
+
 ## 0.8.5
 
 - **The unshipped `license` command is now unmistakable to a scan**, not only to a reader. It has never been in

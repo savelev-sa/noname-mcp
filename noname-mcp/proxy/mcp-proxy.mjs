@@ -85,6 +85,10 @@ let mode = 'forward';        // 'forward' | 'absent'
 let serverVersion = null;
 let lastInitParams = null;   // host's initialize params, replayed to the server on mid-session promotion
 let promoting = false;       // re-entrancy guard for tryPromote
+// Which tool SET the client last received: 'onboarding' | 'server' | null (it has asked for none yet).
+// Tracked from what we actually answered rather than from `mode`, because the two diverge exactly when it
+// matters - a blip flips the mode twice while the client's list never changed.
+let announcedSurface = null;
 
 // --- semver major check (a FLOOR: at or above the minimum; minor/patch drift always tolerated) ---
 function majorOf(v) {
@@ -188,7 +192,22 @@ async function tryPromote() {
     checkVersion(JSON.stringify(initRes));
     mode = 'forward';
     log('service came up mid-session -> switched to forward mode');
-    out({ jsonrpc: '2.0', method: 'notifications/tools/list_changed' });
+    // Announce ONLY when the set the client is holding actually differs from what it would now get.
+    //
+    // Measured on a real machine: an install stops and starts the service, every failed forward degrades us to
+    // absent, and the 4-second re-probe promotes us straight back - so a bare notification here fires REPEATEDLY
+    // during exactly the operation a user is consenting to. The session saw its own symptom and named it: "the
+    // connection is dropping out from under the permission grant before it can take effect", and no install ever
+    // completed through a session while the same tool installed fine when driven directly.
+    //
+    // A re-promotion after a blip advertises the SAME list the client already has, so the notification buys nothing
+    // and costs the client's state. The key is what the client last RECEIVED, not which mode we are in.
+    if (announcedSurface !== 'server') {
+      out({ jsonrpc: '2.0', method: 'notifications/tools/list_changed' });
+      announcedSurface = 'server';
+    } else {
+      log('tool list unchanged since the last announcement - not re-announcing');
+    }
     return true;
   } catch { return false; }
   finally { promoting = false; }
@@ -242,6 +261,8 @@ async function handleAbsent(msg) {
     }});
   }
   if (method === 'tools/list') {
+    // The client is about to hold the ONBOARDING pair, so a later promotion does have something to announce.
+    announcedSurface = 'onboarding';
     return out({ jsonrpc: '2.0', id, result: { tools: [{
       name: 'noname_setup',
       description: 'Check whether the backup software is set up and guide the user through the one-time ' +
@@ -459,6 +480,11 @@ const setupFinishedResult = (id) => ({
 
 // --- forward a message to the HTTP service ---
 async function handleForward(msg) {
+  // Set BEFORE forwarding, and deliberately not after: if this forward fails we degrade into handleAbsent with the
+  // same message, which answers the onboarding pair and corrects this to 'onboarding' on its way out. Recording what
+  // we INTENDED to deliver and letting the fallback overwrite it keeps the value equal to what the client actually
+  // received, down both paths.
+  if (msg.method === 'tools/list') announcedSurface = 'server';
   // Answer for ourselves before forwarding: see PROXY_OWNED_TOOL above.
   if (msg.method === 'tools/call' && msg.params?.name === PROXY_OWNED_TOOL) {
     log(`answered ${PROXY_OWNED_TOOL} locally in forward mode (stale tool list from absent mode)`);
