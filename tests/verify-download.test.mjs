@@ -2,7 +2,7 @@
  * The one branch of the guided install that CANNOT be fired from outside.
  *
  * Verification on a real machine reached the two "no checksum readable" refusals and found the comparison itself
- * as unreachable: the expected digest is read from the API entry of the same release object the bytes come from, so
+ * unreachable: the expected digest is read from the API entry of the same release object the bytes come from, so
  * making the two disagree requires controlling the release host or terminating TLS with a trusted certificate. Both
  * change the machine rather than test the tool.
  *
