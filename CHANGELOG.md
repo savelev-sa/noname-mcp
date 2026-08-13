@@ -3,6 +3,14 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.8.3
+
+- **`/new-plan`, `protecting-something-new`** - only FILE backup plans can be created on this surface today; the
+  disk-image, SQL, Hyper-V and VMware families are frozen. Both now say so **before** gathering sources, schedule and
+  retention, because collecting a plan's worth of decisions and then bouncing the call teaches the user that their
+  answers here are provisional. Reported as unavailable - never as something the product cannot do, never as a
+  failure, since nothing ran.
+
 ## 0.8.2
 
 - **Checksum verification** moved into `proxy/verify-download.mjs` so the refusing branch can be FIRED. Verification on a

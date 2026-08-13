@@ -133,11 +133,17 @@ additionally **not supported by all storage providers**. Never present the forma
 "Back up my documents" is a request about the documents, not about flags. A user who is never told what was left out
 learns it years later, from a restore that returns less than they believed they had.
 
-**Do not carry any of this to another plan family.** These three were read from the file-plan verb, and the plan
-families are **not symmetric** — the option for keeping encrypted files encrypted has been reported absent from the
-image-plan help entirely, not merely defaulted differently. So for a disk-image or any non-file plan, none of the three
-sentences above is established: read that family's own options before saying anything about what it protects. A default
-measured on one verb is a fact about that verb.
+**Only FILE backup plans can be created through this surface today.** Disk-image, SQL, Hyper-V and VMware plan
+creation is **frozen** here — present in the product, switched off on this surface. So if the user asks for one, say it
+is not available here: **never that the product cannot do it** (untrue), and never "it failed" (nothing ran). Say it
+BEFORE gathering sources, schedule and retention for it — collecting a plan's worth of decisions and then bouncing the
+call spends the user's attention on nothing and teaches them their answers here are provisional.
+
+**And when they do return, do not carry any of this to them.** The three defaults above were read from the file-plan
+verb, and the plan families are **not symmetric** — the option for keeping encrypted files encrypted has been reported
+absent from the image-plan help entirely, not merely defaulted differently. So none of those sentences is established
+for a non-file plan: read that family's own options before saying anything about what it protects. A default measured
+on one verb is a fact about that verb.
 
 **Do not report success from the creation call's own answer** — it says the call was accepted, which is not the same as
 the plan carrying what was asked. The settings that decide what "backed up" MEANS are retention, compression and any

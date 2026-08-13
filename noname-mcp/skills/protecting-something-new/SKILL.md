@@ -2,7 +2,7 @@
 name: protecting-something-new
 description: Use when the user names DATA to protect rather than a plan - "back up the finance share", "we need nightly copies of this folder", "add these files to backups". Covers choosing or adding a storage destination, testing it, creating the plan, and reporting what was actually created.
 when_to_use: Also when the user expresses RISK rather than a request - worry about losing something that is not protected yet. "there is stuff on this machine I could not afford to lose", "this folder isn't backed up and it should be", "what happens to these files if the disk dies", "I want this covered before something goes wrong". The user is describing exposure, not asking for a plan; the plan is the answer to it.
-version: 0.4.0
+version: 0.5.0
 ---
 
 # Protecting something new
@@ -57,7 +57,10 @@ name as chosen when nothing was chosen — say which of the two happened.
 
 ## 3. Create the plan — and spell sources with FORWARD slashes
 
-`create_file_backup_plan`.
+`create_file_backup_plan`. **Files and folders are the only kind of plan available here today** — a whole disk, a
+database, a virtual machine belong to families that are switched off on this surface. If that is what they described,
+say so **before** asking them anything else: it is not available here, which is neither "the product cannot do it" nor
+"it failed". Asking for their sources and schedule first and refusing afterwards spends their attention on nothing.
 
 > **Measured, and it is the single most expensive spelling in this product: a source given with BACKSLASHES produces a
 > plan with NO SOURCE AT ALL, and the call reports success.**
