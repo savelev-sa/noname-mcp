@@ -3,6 +3,17 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.8.1
+
+- **`/restore`** - restoring to a DISK or VOLUME is reported as unavailable instead of being prepared. The tool that
+  does it is **frozen** on this surface: present in the product, switched off here. The published text walked the user
+  through naming the disk and agreeing that its entire contents would be replaced - a confirmation collected for a
+  call that would be refused. **A user who agrees to destroy a disk and then sees a refusal learns that confirmations
+  here are theatre**, which is the reflex that gets a real one clicked through. The requirements are kept, marked as
+  what the capability needs when it returns.
+- **`/report`** - the misleading-name example names its tool as frozen today, so a reader who checks it and sees
+  FROZEN does not conclude the rule is stale.
+
 ## 0.8.0
 
 - **`/new-plan`, `/edit-plan`** (`get_plan`, `update_plan`, `create_file_backup_plan`) - the schedule is read BACK

@@ -33,14 +33,21 @@ two different statements and only the first is ever observable here.
 
 1. Identify the plan / backed-up data and **browse available restore points** (versions).
 2. Let the user pick a version and a restore target location.
-   - **A disk or volume target is a different magnitude from a folder, and this product accepts one.** The disk-image
-     restore tool takes a target such as `\\.\PhysicalDrive1` or `D:` — and restoring there replaces EVERYTHING on that
-     disk or volume, not only files that happen to collide. Treat it as its own decision: name the disk or volume the
-     way the machine identifies it, say plainly that its entire contents are replaced, and resolve it ONLY from an id
-     the user supplied explicitly. Never infer it, never offer a "probably this one", and never carry it over from an
-     earlier step in the conversation.
-   - The tool's own confirmation fires, but it does not name which disk — so the naming is this command's job, not
-     something the gate has already done for you.
+   - **Restoring to a DISK or VOLUME is not available through this surface right now — say so, do not prepare it.**
+     The product has a disk-image restore that takes a target such as `\\.\PhysicalDrive1` or `D:`, and this surface
+     answers that tool as **frozen**: the capability exists and is switched off. So if the user asks for a bare-metal
+     or disk-image restore, tell them it is not available here — **never that there is no such thing**, which is a lie
+     about the product, and never "it failed", because nothing ran.
+   - **Do not walk them through the decision first.** Composing the warning, naming the disk and collecting a
+     confirmation for a call that will be refused spends the most expensive kind of attention on nothing — and a user
+     who agrees to destroy a disk and then sees a refusal learns that confirmations here are theatre. Establish that
+     the route exists before asking anyone to agree to its consequences.
+   - **When it becomes available, this is what it needs, and none of it is optional:** restoring to a disk or volume
+     replaces EVERYTHING on it, not only files that happen to collide; the target is resolved ONLY from an id the user
+     supplied explicitly — never inferred, never a "probably this one", never carried over from an earlier step; and
+     naming it is this command's job, because the tool's own confirmation does not say which disk.
+   - **Restoring FILES is unaffected and is the path that works:** `restore_files` takes a destination FOLDER, so a
+     drive letter given there restores files INTO it and does not replace it.
    - **When the server does refuse with its own sentence, quote that sentence — do not compose a rival one.** A
      refusal here arrives as `This will <what>`, written by the code that performs the operation. Pass it through in
      those words and add what it cannot know, such as which disk. Restating the same cost in your own phrasing tells
