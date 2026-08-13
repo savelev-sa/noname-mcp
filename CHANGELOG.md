@@ -29,6 +29,15 @@
   advertises the SAME list, so the notification bought nothing and cost the client its state. The announcement now
   keys on what the client last RECEIVED, not on which mode the proxy is in.
 
+  **Correction, 2026-08-13 - the change is right and the CAUSE above is wrong.** A confirmation run on this
+  version installed successfully through a session, and the proxy log shows why that is not evidence for the
+  paragraph above: both the failing and the succeeding run stayed in onboarding mode throughout, so no promotion
+  and no announcement ever fired. The refusals came from a permission file written into the user directory while
+  that file is project-scoped. **This entry attributed a measured symptom to a mechanism that was not running**;
+  the fix stays because re-announcing an unchanged list is noise that costs the client its state either way, but
+  it fixed something other than what this text claims. Left in place rather than rewritten: an entry quietly made
+  correct hides that the reasoning was never checked.
+
 ## 0.8.5
 
 - **The unshipped `license` command is now unmistakable to a scan**, not only to a reader. It has never been in
