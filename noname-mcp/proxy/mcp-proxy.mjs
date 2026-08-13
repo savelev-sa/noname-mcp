@@ -31,6 +31,7 @@
 
 import { createInterface } from 'readline';
 import { agentInstalled } from './agent-detect.mjs';
+import { verifyOrDiscard } from './verify-download.mjs';
 
 const MCP_URL = process.env.NONAME_MCP_URL || 'http://localhost:19360/mcp';
 // How the backup product is NAMED to the user. One place, env-overridable: the source carries no product
@@ -362,8 +363,8 @@ async function runGuidedInstall() {
   // 2 - download to a temp file.
   const { tmpdir } = await import('node:os');
   const { join } = await import('node:path');
-  const { writeFile, unlink, readFile } = await import('node:fs/promises');
-  const { createHash } = await import('node:crypto');
+  // Hashing and reading moved out with the comparison; what stays is what this function still does itself.
+  const { writeFile, unlink } = await import('node:fs/promises');
   const target = join(tmpdir(), 'noname-mcp-setup-download.exe');
   try {
     const res = await fetch(SERVER_INSTALLER_URL, { redirect: 'follow', signal: AbortSignal.timeout(600000) });
@@ -373,10 +374,14 @@ async function runGuidedInstall() {
   steps.push('downloaded the installer');
 
   // 3 - VERIFY, and refuse on mismatch. Nothing has been executed at this point.
-  const actual = createHash('sha256').update(await readFile(target)).digest('hex');
-  if (actual !== expected) {
-    await unlink(target).catch(() => {});
-    log('install REFUSED: checksum mismatch, expected ' + expected.slice(0, 12) + ' got ' + actual.slice(0, 12));
+  //
+  // The comparison and the discard live in verify-download.mjs so that the refusing branch can be FIRED by a test.
+  // It cannot be fired from outside: the expected digest comes from the same release object as the bytes, so making
+  // the two disagree means controlling the release host. Measured on a real machine, which reached "no checksum
+  // readable" twice and this branch never.
+  const verdict = await verifyOrDiscard(target, expected);
+  if (!verdict.ok) {
+    log('install REFUSED: checksum mismatch, expected ' + expected.slice(0, 12) + ' got ' + verdict.actual.slice(0, 12));
     return refuse('checksum_mismatch',
       'The downloaded installer does not match the checksum published with the release, so it was deleted and NOT run. ' +
       'This is what a corrupted download or a tampered file looks like — do not retry blindly; say what happened.');

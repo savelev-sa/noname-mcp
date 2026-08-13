@@ -3,6 +3,14 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.8.2
+
+- **Checksum verification** moved into `proxy/verify-download.mjs` so the refusing branch can be FIRED. Verification on a
+  real machine reached both "no checksum readable" refusals and found the comparison itself unreachable from outside: the expected digest comes from the same release object as the bytes, so making them disagree means
+  controlling the release host. **That property is why the check is worth trusting, so it stays** - and a check nobody
+  has seen fail is not a check, so the mechanism now lives where a test calls it with two values directly. No caller
+  can supply the expected digest; behaviour is unchanged.
+
 ## 0.8.1
 
 - **`/restore`** - restoring to a DISK or VOLUME is reported as unavailable instead of being prepared. The tool that
