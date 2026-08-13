@@ -3,6 +3,12 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.9.2
+
+- **`/edit-plan`** - one sentence still listed exclusions among the settings that cannot be verified, four lines
+  above the paragraph that had just moved them. Shipped that way in 0.9.1 because I read my own check reporting one
+  remaining file and committed anyway.
+
 ## 0.9.1
 
 - **`/new-plan`, `/edit-plan`** - EXCLUSIONS left the unreadable group. As of server **0.6.2** a plan read names the

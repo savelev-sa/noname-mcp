@@ -82,9 +82,10 @@ none of the caution a verb that sounds like it acts.
      it reaches every plan — that one is named before it is touched.
 4. **Summarize and confirm** before applying: what changes, from what, to what.
 5. **Apply in place** with the update tool — and do not treat its answer as confirmation. Whether the plan carries the
-   retention, compression and exclusions requested is not verifiable from what we send, and retention is the setting most
+   retention and compression requested is not verifiable from what we send, and retention is the setting most
    likely to be silently wrong while every call reports success; the user would find out at a restore.
-   **The schedule IS readable and the rest is not, so treat them differently rather than as one blind spot.** `get_plan`
+   **The schedule and the exclusions ARE readable and the rest is not, so treat them differently rather than as one
+   blind spot.** `get_plan`
    returns the plan's real recurrence; the plan listing still returns only name, type, id and last result. **A retention
    tool exists and is MACHINE-WIDE, not this plan's** — comparing it with what was asked for this plan and finding
    agreement confirms nothing while reading exactly like a verification, and a false "verified" ends the only enquiry
