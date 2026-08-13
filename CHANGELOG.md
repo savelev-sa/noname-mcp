@@ -3,6 +3,13 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.8.5
+
+- **The unshipped `license` command is now unmistakable to a scan**, not only to a reader. It has never been in
+  `commands/` and was never loaded - but it kept a command's frontmatter, so a check that counted frontmatter rather
+  than location read it as a ninth shipped command and another team investigated a `/license` that no user can reach.
+  The extension is now `.md.frozen`; restoring it is a rename and a move.
+
 ## 0.8.4
 
 - **`protecting-something-new`** - the frozen-family check is **step 0**, not a note inside the creation step. Shipped

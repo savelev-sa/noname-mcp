@@ -3,9 +3,15 @@ name: license
 description: Assign a license and report active license types and counts.
 ---
 
-> **NOT SHIPPED — frozen for the MVP, and this directory is the whole mechanism.** A command is advertised by living in
-> `commands/`; moving it out unships it while keeping every reviewed line. **Restore = move this file back**, one
-> operation, nothing to reconstruct.
+> **NOT SHIPPED — frozen for the MVP.** A command is advertised by living in `commands/`; this file is not there, and
+> its extension is `.md.frozen` so that nothing globbing `*.md` can mistake it for one. **Restore = rename to `.md`
+> and move it into `commands/`** — two words, nothing to reconstruct.
+>
+> **The extension exists because the directory was not enough.** This file kept a command's frontmatter, and a scan
+> that counted frontmatter rather than location read it as a ninth shipped command — costing another team a real
+> investigation into a `/license` that no user can reach, since the command does not exist rather than existing and
+> failing. The location was already correct; what was wrong is that being correct depended on the reader knowing where
+> to look.
 >
 > **Why:** its entire tool family — `get_license_info`, `activate_license`, `release_license` — is in the frozen set, so
 > the command advertised a capability the dispatcher refuses. That is worse than absence: an instruction that reads as
