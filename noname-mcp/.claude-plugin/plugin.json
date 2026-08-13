@@ -1,7 +1,7 @@
 {
   "name": "noname-mcp",
   "description": "Manage a Windows backup agent from Claude - create and run backup plans, check status, restore data, manage storage destinations. A thin proxy to a locally-installed MCP-server service (Windows v1).",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "author": {
     "name": "noname-mcp maintainers"
   },

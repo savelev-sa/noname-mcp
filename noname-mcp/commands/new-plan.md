@@ -97,12 +97,19 @@ teaches them that the confirmation was not worth reading.
 from — a setting the user chose reads differently from one that merely happened, and that distinction is the whole
 value of saying it at all.
 
-**Compose that from the request you made, and say so.** Measured: the creation result relays the agent's own output plus
-notes on schedule, retention and compression — **it carries no protection summary**, so there is nothing to pass
-through. An earlier version of this file said the result states those values and told you to relay the words; it does
-not, and an instruction to relay an absent line is worse than none, because the likely outcome is silence about
-protection while the call reports success. So mark each value from what you sent: named in the request, or left to the
-agent's default per the list below. Do not present it as read back from the plan — it is not.
+**Relay the result's own `PROTECTION IN EFFECT:` block — do not compose one.** Measured against the published server
+`0.6.1`: the creation result now carries that block, and it marks every value with where it came from — *(you asked)*
+or *(agent default)* — which is the distinction this section exists to preserve. Relay those words.
+
+**If the result carries no such block, the server is older than 0.6.1.** Then compose from what you sent, and **say
+that you are doing so** — named in the request, or left to the agent's default per the list below. Never present a
+composed line as read back from the plan.
+
+The history is worth one sentence, because both directions have already gone wrong here. This file once said the
+result states those values when it did not, and an instruction to relay an absent line produces silence about
+protection while the call reports success. It was then corrected to compose the line — which became wrong in the other
+direction the moment the server started reporting it, and a reconstruction that disagrees with the result is worse
+than either, because two versions of the truth arrive in the same message.
 
 The three narrowings below are why that line exists, and remain what to check it against. They are defaults of the
 **file** backup plan, each surfacing at the restore — the single moment a user cannot absorb it:

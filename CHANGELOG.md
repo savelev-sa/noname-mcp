@@ -3,6 +3,15 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.7.3
+
+- **`/new-plan`** - relays the creation result's own `PROTECTION IN EFFECT:` block instead of composing one from the
+  request. The server publishes it as of 0.6.1, marking each value *(you asked)* or *(agent default)* - the exact
+  distinction this section existed to preserve, now measured rather than reconstructed. **The published text said the
+  result "carries no protection summary", which stopped being true when the server shipped it.** Composing is kept as
+  the fallback for older servers, and must say that it is composed: a reconstruction that disagrees with the result is
+  worse than either version alone, because two truths arrive in one message.
+
 ## 0.7.2
 
 - **`protecting-something-new`** - the plan list is read BEFORE anything is asked, and for two things rather than
