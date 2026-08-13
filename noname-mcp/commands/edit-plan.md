@@ -52,18 +52,20 @@ none of the caution a verb that sounds like it acts.
      capability while adding one, and synthetic full is additionally **not supported by all storage providers**. If the
      user only wanted the feature, the honest answer may be that it is not available on this plan. **And the trade
      reaches the schedule too:** weekly and real-time recurrence are reported not to exist in the new format, so a
-     format change can silently redefine WHEN this user is protected, not only what is stored — **and this surface
-     cannot read a schedule back to tell you what it became.** So say that the change may alter the cadence and that
-     you have no way to check it here; a cadence that quietly changed is the kind of loss nobody notices until the gap
-     matters, and pretending it was verified is worse than naming the blind spot.
+     format change can silently redefine WHEN this user is protected, not only what is stored — **so read the schedule
+     back afterwards with `get_plan` and report what it says.** As of server `0.6.1` that read returns the plan's real
+     recurrence from its definition on disk, so a cadence quietly redefined by a format change is now visible instead of
+     being a blind spot you name. If the read disagrees with what was asked, say so plainly rather than reporting
+     "scheduled".
    - **A plan has TWO schedules, and the second one fails quietly.** Besides the ordinary cadence there is a full
      force-full schedule with its own complete set of controls — thirteen of them, mirroring the first: its own day,
      weekday, repeat interval, daily window. Changing or disabling the ordinary schedule leaves that one untouched and
      vice versa. **The force-full one is the dangerous half to lose:** backups keep running and keep reporting success
      while the chain grows with no fresh full base, so nothing looks wrong until a restore needs that base. When you
-     touch either schedule, report BOTH separately — never as "the schedule". **And you cannot read either of them
-     back:** the agent's plan listing returns no schedule in any form, and nothing in this surface exposes one, so say
-     what you asked for and say that it cannot be verified from here rather than implying it was checked.
+     touch either schedule, report BOTH separately — never as "the schedule". **And both are readable: `get_plan`
+     returns the ordinary recurrence and the force-full twin beside it** when the plan declares one. The twin is named
+     only when it exists, so its absence from the read is not a fault to report — but when it IS there and disagrees
+     with what was asked, that disagreement is the finding, because this is the half whose loss keeps reporting success.
    - **Read a schedule before disabling it, because this product may be the only place it is written down.** Disabling
      is reversible as a setting and irreversible in effect: the runs that did not happen cannot be recovered, there is
      nothing to recover them from, and re-enabling means re-specifying the cadence from scratch. So capture the values
@@ -82,12 +84,14 @@ none of the caution a verb that sounds like it acts.
 5. **Apply in place** with the update tool — and do not treat its answer as confirmation. Whether the plan carries the
    retention, compression and exclusions requested is not verifiable from what we send, and retention is the setting most
    likely to be silently wrong while every call reports success; the user would find out at a restore.
-   **Measured: this surface has no per-plan settings read**, so there is no comparison to make. The plan listing returns
-   name, type, id and last result. **A retention tool exists and is MACHINE-WIDE, not this plan's** — comparing it with
-   what was asked for this plan and finding agreement confirms nothing while reading exactly like a verification, and a
-   false "verified" ends the only enquiry that would have caught the problem.
-   So report the change you made, name retention as the part that cannot be confirmed from here, and never imply it was
-   read back. An unconfirmable change is not an applied one — and saying so is the whole value of this step.
+   **The schedule IS readable and the rest is not, so treat them differently rather than as one blind spot.** `get_plan`
+   returns the plan's real recurrence; the plan listing still returns only name, type, id and last result. **A retention
+   tool exists and is MACHINE-WIDE, not this plan's** — comparing it with what was asked for this plan and finding
+   agreement confirms nothing while reading exactly like a verification, and a false "verified" ends the only enquiry
+   that would have caught the problem.
+   So read the schedule back and report what it says; for retention, compression and exclusions report the change you
+   made and name them as the parts that cannot be confirmed from here. An unconfirmable change is not an applied one —
+   and keeping the two groups apart is what stops the readable half from being written off with the unreadable one.
 
 **Never describe the plan as fully shown.** What this surface can read back is not everything a plan may carry: a plan
 created outside it can hold a pre- or post-action that runs a command, and nothing here can report that — the only place

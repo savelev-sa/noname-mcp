@@ -3,6 +3,18 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.8.0
+
+- **`/new-plan`, `/edit-plan`** (`get_plan`, `update_plan`, `create_file_backup_plan`) - the schedule is read BACK
+  and reported, instead of being named as a blind spot. As of server `0.6.1` the plan read returns the plan's real
+  recurrence from its definition on disk, plus the force-full twin when the plan declares one. Four published
+  statements said this surface could not read a schedule back; each was measured and true when written, and each
+  became false when the server shipped the read.
+- **The two groups are now kept apart.** Retention, compression and exclusions still cannot be read back per plan and
+  are still named as unconfirmed. Writing off the readable half with the unreadable one is how a fixed defect stays
+  invisible - and the defect this read-back exists for was a plan asked to run every two days and recorded as
+  MONTHLY.
+
 ## 0.7.3
 
 - **`/new-plan`** - relays the creation result's own `PROTECTION IN EFFECT:` block instead of composing one from the
