@@ -89,9 +89,15 @@ none of the caution a verb that sounds like it acts.
    tool exists and is MACHINE-WIDE, not this plan's** — comparing it with what was asked for this plan and finding
    agreement confirms nothing while reading exactly like a verification, and a false "verified" ends the only enquiry
    that would have caught the problem.
-   So read the schedule back and report what it says; for retention, compression and exclusions report the change you
-   made and name them as the parts that cannot be confirmed from here. An unconfirmable change is not an applied one —
-   and keeping the two groups apart is what stops the readable half from being written off with the unreadable one.
+   So read the schedule back and report what it says; **exclusions too, as of server `0.6.2`** — `get_plan` names the
+   ones a plan stores. For retention and compression, report the change you made and name them as the parts that
+   cannot be confirmed from here. An unconfirmable change is not an applied one — and keeping the two groups apart is
+   what stops the readable half from being written off with the unreadable one, which is exactly what nearly happened
+   to exclusions: they moved groups within a day of this paragraph being written.
+
+   **On exclusions the empty answer is the finding, not a blank.** A plan that reports none after some were asked for
+   did not store what was sent — measured cause: the agent dropped the flag and exited zero. Say that plainly instead
+   of reporting the edit as applied.
 
 **Never describe the plan as fully shown.** What this surface can read back is not everything a plan may carry: a plan
 created outside it can hold a pre- or post-action that runs a command, and nothing here can report that — the only place

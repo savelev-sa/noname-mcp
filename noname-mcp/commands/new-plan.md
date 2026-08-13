@@ -150,14 +150,20 @@ the plan carrying what was asked. The settings that decide what "backed up" MEAN
 exclusions, and retention is the one most likely to be silently wrong while everything reports fine; the user would
 discover it at a restore, when it decides how far back they can reach.
 
-**Retention, compression and exclusions still cannot be read back per plan.** The plan listing returns name, type, id
-and last result — no settings. **The trap is that a retention tool DOES exist and is machine-wide, not this plan's**:
-comparing it against what the user asked for THIS plan and finding agreement would confirm nothing, while reading
-exactly like a verification. A false "verified" is worse than an admitted gap, because it ends the only enquiry that
-would have found the problem.
+**Retention and compression still cannot be read back per plan.** The plan listing returns name, type, id and last
+result — no settings. **The trap is that a retention tool DOES exist and is machine-wide, not this plan's**: comparing
+it against what the user asked for THIS plan and finding agreement would confirm nothing, while reading exactly like a
+verification. A false "verified" is worse than an admitted gap, because it ends the only enquiry that would have found
+the problem.
 
-So for those three: say what you asked for, name retention explicitly as the setting that cannot be confirmed, and do
-not imply it was checked.
+So for those two: say what you asked for, name retention explicitly as the setting that cannot be confirmed, and do not
+imply it was checked.
+
+**EXCLUSIONS left that group as of server `0.6.2` — `get_plan` now says which ones a plan stores.** Read them back
+whenever any were asked for, and treat the empty answer as information rather than as silence: **a plan that reports no
+exclusions after you asked for some did not store what you sent.** That is a real failure mode with a measured cause —
+the flag was dropped by the agent, which then exited zero — and this read is the only place its owner could ever find
+out. So if the read says nothing about exclusions and the user asked for some, say plainly that they did not land.
 
 **The SCHEDULE is no longer in that group — `get_plan` reads it back, and you are expected to use it.** As of server
 `0.6.1` the plan read returns the plan's REAL recurrence, taken from its definition on disk rather than inferred, and

@@ -3,6 +3,15 @@
 > Versions here are the PLUGIN manifest, which is a different namespace from the server's release tags. A change
 > is delivered by the version that carried it, which is not always the commit that wrote it - see 0.7.0.
 
+## 0.9.1
+
+- **`/new-plan`, `/edit-plan`** - EXCLUSIONS left the unreadable group. As of server **0.6.2** a plan read names the
+  exclusions it stores, so both commands read them back instead of reporting them as unconfirmable. Retention and
+  compression stay unreadable per plan.
+- **The empty answer is treated as a finding.** A plan reporting no exclusions after some were asked for did not
+  store what was sent - the agent dropped the flag and exited zero - and this read is the only place its owner could
+  find out. Both commands now say that plainly instead of reporting the change as applied.
+
 ## 0.9.0
 
 - **The proxy no longer re-announces a tool list the client already has.** Measured on a real machine: an install
